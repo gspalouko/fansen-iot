@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FANSEN IoT</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --cyan:#00e5ff;--green:#00ff88;--orange:#ff9500;--red:#ff3b3b;
+  --bg:rgba(5,10,25,0.92);--panel:rgba(10,20,45,0.90);--border:rgba(0,255,255,0.18);
+}
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:linear-gradient(rgba(0,8,20,0.78),rgba(0,0,0,0.88)),
+    url('https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?q=80&w=1400&auto=format&fit=crop');
+  background-size:cover;background-position:center;background-attachment:fixed;
+  color:white;min-height:100vh;overflow-x:hidden;
+}
+#loginPage{display:flex;justify-content:center;align-items:center;height:100vh;padding:20px;}
+.login-box{width:100%;max-width:420px;background:rgba(5,10,25,0.92);border:1px solid var(--border);padding:40px 35px;border-radius:24px;backdrop-filter:blur(14px);box-shadow:0 0 40px rgba(0,229,255,0.12);text-align:center;}
+.login-box h1{font-family:'Orbitron',monospace;font-size:30px;color:var(--cyan);letter-spacing:3px;margin-bottom:8px;}
+.login-box .sub{font-size:13px;color:#aaccd8;margin-bottom:25px;line-height:1.6;}
+input[type=password],input[type=text],input[type=time],select{width:100%;padding:14px 16px;border:1px solid var(--border);border-radius:14px;background:rgba(0,30,60,0.6);color:white;font-size:15px;font-family:'Rajdhani',sans-serif;margin-bottom:14px;outline:none;}
+input:focus,select:focus{border-color:var(--cyan);}
+select option{background:#0a1428;}
+button{cursor:pointer;}
+.btn-primary{width:100%;padding:15px;border:none;border-radius:14px;background:linear-gradient(135deg,#00bcd4,#0097a7);color:white;font-size:16px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:1px;transition:0.3s;}
+.btn-primary:hover{background:linear-gradient(135deg,#00e5ff,#00bcd4);transform:translateY(-1px);}
+#dashboard{display:none;}
+header{background:var(--bg);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;backdrop-filter:blur(12px);z-index:100;border-bottom:1px solid var(--border);}
+.logo{font-family:'Orbitron',monospace;font-size:14px;color:var(--cyan);letter-spacing:2px;}
+.menu-btn{font-size:28px;background:none;border:none;color:white;}
+.server-status{display:flex;align-items:center;gap:6px;font-size:11px;}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--red);transition:0.5s;}
+.dot.online{background:var(--green);box-shadow:0 0 8px var(--green);}
+.page{display:none;padding:0 0 100px;}
+.page.active{display:block;}
+.hero{padding:26px 20px 8px;text-align:center;}
+.hero h1{font-family:'Orbitron',monospace;font-size:16px;line-height:1.6;color:var(--cyan);margin-bottom:8px;letter-spacing:1px;}
+.hero p{color:#aaccd8;font-size:13px;line-height:1.7;}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:14px 16px;}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:18px 10px;text-align:center;backdrop-filter:blur(10px);}
+.card h2{font-size:11px;color:#aaa;letter-spacing:1px;margin-bottom:10px;text-transform:uppercase;}
+.number{font-family:'Orbitron',monospace;font-size:34px;font-weight:700;color:var(--cyan);}
+.number.green{color:var(--green);}
+.number.orange{color:var(--orange);}
+.number.red{color:var(--red);}
+.clock-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.clock-time{font-family:'Orbitron',monospace;font-size:20px;font-weight:700;color:var(--cyan);letter-spacing:2px;}
+.clock-date{font-size:11px;color:#7ab;letter-spacing:1px;text-transform:uppercase;}
+.clock-month{font-size:12px;color:var(--green);font-weight:600;margin-top:2px;}
+.section{padding:12px 16px;}
+.section-title{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;color:#7ab;margin-bottom:12px;text-transform:uppercase;}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:16px;backdrop-filter:blur(10px);}
+.list-item{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;}
+.list-item:last-child{border:none;}
+.list-item .nom{font-weight:600;}
+.badge{font-weight:700;font-size:11px;padding:3px 9px;border-radius:20px;}
+.badge.present{background:rgba(0,255,136,0.15);color:var(--green);}
+.badge.warning{background:rgba(255,149,0,0.15);color:var(--orange);}
+.badge.absent{background:rgba(255,59,59,0.15);color:var(--red);}
+.badge.supprime{background:rgba(200,0,0,0.15);color:#ff6060;}
+.pointage-row{padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.pointage-row:last-child{border:none;}
+.pointage-nom{font-weight:700;font-size:14px;margin-bottom:5px;}
+.pointage-slots{display:flex;gap:5px;flex-wrap:wrap;}
+.slot{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:600;}
+.slot.ok{background:rgba(0,255,136,0.15);color:var(--green);}
+.slot.miss{background:rgba(255,59,59,0.06);color:#445;border:1px dashed rgba(255,59,59,0.2);}
+.slot.warn{background:rgba(255,149,0,0.15);color:var(--orange);}
+.pointage-total{font-size:11px;color:var(--cyan);margin-top:4px;font-family:'Orbitron',monospace;}
+.btn-dl{width:100%;padding:12px;border:none;border-radius:14px;background:linear-gradient(135deg,#00bcd4,#0097a7);color:white;font-size:14px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:1px;margin-top:10px;transition:0.3s;}
+.btn-dl:hover{filter:brightness(1.15);}
+.btn-dl.ghost{background:rgba(0,188,212,0.10);border:1px solid var(--border);}
+.btn-cancel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#aaa;}
+#sideMenu{position:fixed;top:0;right:-320px;width:300px;height:100%;background:rgba(4,8,22,0.99);padding:25px;transition:0.4s cubic-bezier(.4,0,.2,1);z-index:999;overflow-y:auto;backdrop-filter:blur(16px);border-left:1px solid var(--border);}
+#sideMenu.open{right:0;}
+.side-link{padding:13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:14px;margin-bottom:10px;cursor:pointer;transition:0.2s;font-size:14px;}
+.side-link:hover{background:rgba(0,229,255,0.08);border-color:var(--border);}
+#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:3000;justify-content:center;align-items:center;padding:20px;}
+#modal.open{display:flex;}
+.modal-box{background:rgba(5,12,30,0.98);border:1px solid var(--border);border-radius:24px;padding:26px;width:100%;max-width:400px;backdrop-filter:blur(16px);max-height:90vh;overflow-y:auto;}
+.modal-box h3{font-family:'Orbitron',monospace;color:var(--cyan);margin-bottom:16px;font-size:14px;}
+.modal-row{display:flex;gap:10px;}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:12px;}
+.cal-header{font-size:10px;color:#7ab;text-align:center;padding:4px 0;font-weight:600;}
+.cal-day{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);transition:0.2s;}
+.cal-day:hover:not(.empty){background:rgba(0,229,255,0.15);border-color:var(--cyan);}
+.cal-day.empty{background:none;border:none;cursor:default;}
+.cal-day.has-data{background:rgba(0,229,255,0.12);border-color:rgba(0,229,255,0.3);color:var(--cyan);}
+.cal-day.today{background:rgba(0,255,136,0.15);border-color:var(--green);color:var(--green);}
+.month-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px;}
+.month-card{background:rgba(0,229,255,0.06);border:1px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;cursor:pointer;transition:0.2s;}
+.month-card:hover{background:rgba(0,229,255,0.14);transform:translateY(-2px);}
+.month-card .mname{font-family:'Orbitron',monospace;font-size:13px;color:var(--cyan);margin-bottom:4px;}
+.month-card .minfo{font-size:11px;color:#7ab;margin-top:2px;}
+.bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:rgba(4,8,22,0.97);display:flex;justify-content:space-around;padding:8px 5px 12px;border-top:1px solid var(--border);z-index:100;}
+.bottom-nav div{text-align:center;font-size:10px;color:#889;cursor:pointer;transition:0.2s;}
+.bottom-nav div:hover,.bottom-nav div.active-nav{color:var(--cyan);}
+.bottom-nav span{display:block;font-size:20px;margin-bottom:2px;}
+#overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:998;}
+#overlay.open{display:block;}
+.empty-msg{text-align:center;color:#445;padding:26px 0;font-size:13px;}
+.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:rgba(0,229,255,0.15);border:1px solid var(--cyan);color:var(--cyan);padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+.alerte-pointage{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:rgba(0,255,136,0.15);border:2px solid var(--green);color:var(--green);padding:14px 24px;border-radius:16px;font-size:15px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.4s;pointer-events:none;text-align:center;white-space:nowrap;box-shadow:0 0 20px rgba(0,255,136,0.3);}
+.alerte-pointage.show{opacity:1;}
+.info-box{background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);border-radius:14px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:#aaccd8;line-height:1.8;}
+.info-box strong{color:var(--cyan);}
+footer{padding:14px 20px 100px;text-align:center;font-size:11px;color:#556;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="login-box">
+    <h1>FANSEN IoT</h1>
+    <p class="sub">Système automatisé de gestion de la présence et du pointage des ouvriers dans une entreprise industrielle.</p>
+    <input type="password" id="password" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn-primary" onclick="login()">Connexion</button>
+    <p id="error" style="margin-top:10px;color:var(--red);font-size:13px;"></p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <header>
+    <div class="logo">FANSEN • ESP32 • IoT</div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div class="server-status">
+        <div class="dot" id="serverDot"></div>
+        <span id="serverLabel" style="color:#889;font-size:11px;">Firebase</span>
+      </div>
+      <button class="menu-btn" onclick="openMenu()">⋮</button>
+    </div>
+  </header>
+
+  <div id="overlay" onclick="closeMenu()"></div>
+  <div id="sideMenu">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h2 style="font-family:'Orbitron',monospace;color:var(--cyan);font-size:14px;">Menu</h2>
+      <button onclick="closeMenu()" style="background:none;border:none;color:white;font-size:24px;">✕</button>
+    </div>
+    <div class="side-link" onclick="goPage('homePage');closeMenu()">🏠 Accueil</div>
+    <div class="side-link" onclick="goPage('membresPage');closeMenu()">👥 Liste des membres</div>
+    <div class="side-link" onclick="goPage('presencesPage');closeMenu()">📋 Pointages du jour</div>
+    <div class="side-link" onclick="goPage('historiqueCalPage');closeMenu()">📅 Historique – Calendrier</div>
+    <div class="side-link" onclick="goPage('historiqueMoisPage');closeMenu()">📊 Historique – 6 mois</div>
+    <div class="side-link" onclick="goPage('absencesPage');closeMenu()">❌ Absences</div>
+    <div class="side-link" onclick="goPage('supprimesPage');closeMenu()">🗑️ Employés supprimés</div>
+    <div class="side-link" onclick="doAdminLogin();closeMenu()">🔐 Administration</div>
+  </div>
+
+  <!-- ACCUEIL -->
+  <div id="homePage" class="page active">
+    <section class="hero">
+      <h1>SYSTÈME DE PRÉSENCE ET POINTAGE</h1>
+      <p>Plateforme industrielle basée sur ESP32 &amp; IoT</p>
+    </section>
+    <div class="cards">
+      <div class="card"><h2>Présents</h2><div class="number green" id="presentCount">0</div></div>
+      <div class="card"><h2>Absents</h2><div class="number red" id="absentCount">0</div></div>
+      <div class="card"><h2>Retards</h2><div class="number orange" id="retardCount">0</div></div>
+      <div class="card clock-card">
+        <div class="clock-time" id="clockTime">--:--:--</div>
+        <div class="clock-date" id="clockDate">---</div>
+        <div class="clock-month" id="clockMonth">---</div>
+      </div>
+    </div>
+    <div class="section">
+      <button class="btn-dl" onclick="showModal('addPointage')">＋ Simuler un pointage</button>
+    </div>
+    <section class="section">
+      <div class="section-title">Pointages du jour</div>
+      <div class="panel" id="homePresencePanel"></div>
+    </section>
+    <footer>Projet de soutenance — Gaspar GSP | ESP32 • IoT • Électrotechnique</footer>
+  </div>
+
+  <!-- MEMBRES -->
+  <div id="membresPage" class="page">
+    <section class="hero"><h1>LISTE DES MEMBRES</h1></section>
+    <section class="section">
+      <div class="section-title">Tous les employés</div>
+      <div class="panel" id="membresPanel"></div>
+      <button class="btn-dl" onclick="showModal('addMembre')" style="margin-top:12px;">＋ Ajouter un employé</button>
+    </section>
+  </div>
+
+  <!-- POINTAGES DU JOUR -->
+  <div id="presencesPage" class="page">
+    <section class="hero"><h1>POINTAGES DU JOUR</h1><p id="todayDateLabel"></p></section>
+    <section class="section">
+      <div class="info-box">
+        <strong>Horaires journaliers :</strong><br>
+        🟢 Entrée matin : <strong>08h00</strong> &nbsp;|&nbsp; 🔴 Sortie pause : <strong>12h00</strong><br>
+        🟢 Reprise : <strong>12h30</strong> &nbsp;|&nbsp; 🔴 Sortie soir : <strong>16h30</strong><br>
+        ⏱️ Durée journalière : <strong>8h00</strong>
+      </div>
+      <div class="section-title">Détail des pointages</div>
+      <div class="panel" id="presencePanel2"></div>
+      <button class="btn-dl" onclick="telechargerPointagesJour()">⬇ Télécharger pointages du jour</button>
+    </section>
+  </div>
+
+  <!-- CALENDRIER -->
+  <div id="historiqueCalPage" class="page">
+    <section class="hero"><h1>CALENDRIER – HISTORIQUE</h1><p>Appuyez sur un jour pour télécharger</p></section>
+    <section class="section">
+      <div class="section-title" id="calMonthLabel"></div>
+      <div class="panel"><div class="calendar-grid" id="calGrid"></div></div>
+      <div style="display:flex;gap:10px;margin-top:10px;">
+        <button class="btn-dl ghost" onclick="calPrevMonth()">← Précédent</button>
+        <button class="btn-dl ghost" onclick="calNextMonth()">Suivant →</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- 6 MOIS -->
+  <div id="historiqueMoisPage" class="page">
+    <section class="hero"><h1>HISTORIQUE – 6 MOIS</h1><p>CSV avec total des heures par employé</p></section>
+    <section class="section">
+      <div class="section-title">Mois disponibles</div>
+      <div class="month-grid" id="monthGrid"></div>
+    </section>
+  </div>
+
+  <!-- ABSENCES -->
+  <div id="absencesPage" class="page">
+    <section class="hero"><h1>ABSENCES</h1></section>
+    <section class="section">
+      <div class="section-title">Absents aujourd'hui</div>
+      <div class="panel" id="absencesPanel"></div>
+      <button class="btn-dl" onclick="telechargerAbsences()" style="margin-top:12px;">⬇ Télécharger absences</button>
+    </section>
+  </div>
+
+  <!-- SUPPRIMÉS -->
+  <div id="supprimesPage" class="page">
+    <section class="hero"><h1>EMPLOYÉS SUPPRIMÉS</h1></section>
+    <section class="section">
+      <div class="panel" id="supprimesPanel"></div>
+    </section>
+  </div>
+
+  <!-- RÉGLAGES -->
+  <div id="settingsPage" class="page">
+    <section class="hero"><h1>RÉGLAGES</h1></section>
+    <section class="section">
+      <div class="section-title">Système</div>
+      <div class="panel">
+        <div class="list-item">
+          <span>Changer mot de passe</span>
+          <button class="btn-dl" style="width:auto;padding:8px 12px;margin:0;" onclick="showModal('changeMainPwd')">Modifier</button>
+        </div>
+        <div class="list-item">
+          <span>Changer code admin</span>
+          <button class="btn-dl" style="width:auto;padding:8px 12px;margin:0;" onclick="showModal('changeAdminPwd')">Modifier</button>
+        </div>
+        <div class="list-item">
+          <span>Mise à jour Firebase</span>
+          <span class="badge present">Temps réel</span>
+        </div>
+        <div class="list-item">
+          <span>Statut Firebase</span>
+          <span id="settingsFirebaseStatus" class="badge absent">Vérification...</span>
+        </div>
+      </div>
+      <div id="adminDownloads" style="display:none;margin-top:14px;">
+        <div class="section-title">Téléchargements Admin</div>
+        <button class="btn-dl" onclick="telechargerPresences30j()">⬇ Pointages – 30 derniers jours</button>
+        <button class="btn-dl" onclick="telechargerAbsencesAdmin()">⬇ Absences complètes</button>
+        <button class="btn-dl" onclick="goPage('historiqueMoisPage')">⬇ Historique 6 mois</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- NAV BAS -->
+  <div class="bottom-nav">
+    <div onclick="goPage('homePage')" class="active-nav"><span>🏠</span>Accueil</div>
+    <div onclick="goPage('presencesPage')"><span>📋</span>Pointages</div>
+    <div onclick="goPage('historiqueCalPage')"><span>📅</span>Calendrier</div>
+    <div onclick="doAdminLogin()"><span>👤</span>Admin</div>
+    <div onclick="goPage('settingsPage')"><span>⚙️</span>Réglages</div>
+  </div>
+</div>
+
+<div id="modal"><div class="modal-box" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+<div class="alerte-pointage" id="alertePointage"></div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getDatabase, ref, set, get, onValue, push, update }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+
+/* ══════════════════════════════════════════════
+   🔥 CONFIGURATION FIREBASE
+   (déjà configuré avec votre projet)
+   ══════════════════════════════════════════════ */
+const firebaseConfig = {
+  databaseURL: 'https://fansen-iot-default-rtdb.firebaseio.com'
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+/* ══════════════════════════════════════════════
+   HORAIRES
+   ══════════════════════════════════════════════ */
+const HORAIRES = {
+  entree_matin:    '08:00',
+  sortie_pause:    '12:00',
+  reprise:         '12:30',
+  sortie_soir:     '16:30',  // 8h de travail
+  duree_theo_min:  480,
+  tolerance_retard: 5
+};
+const SLOTS_KEYS   = ['entree_matin','sortie_pause','reprise','sortie_soir'];
+const SLOTS_LABELS = ['Entrée matin','Sortie pause','Reprise','Sortie soir'];
+const HEURES_DEF   = {entree_matin:'08:00',sortie_pause:'12:00',reprise:'12:30',sortie_soir:'16:30'};
+const MOIS_NOMS    = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const JOURS_NOMS   = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+
+/* ══════════════════════════════════════════════
+   ÉTAT LOCAL
+   ══════════════════════════════════════════════ */
+let employes      = ['KOFFI','MENSAH','AZIZ','YAO','KOUASSI','AMOS'];
+let supprimes     = [];
+let presencesData = {};
+let mainPassword  = 'GSP2026';
+let adminPassword = 'ADMIN2026';
+let isAdmin       = false;
+let derniersSnap  = {};
+
+/* ── Helpers ── */
+function dateKey(d){ return d.toISOString().split('T')[0]; }
+function todayKey(){ return dateKey(new Date()); }
+function heureEnMin(h){ if(!h) return null; const[hh,mm]=h.split(':').map(Number); return hh*60+mm; }
+function minEnLabel(m){
+  if(m===null||m===undefined||isNaN(m)||m<0) return '—';
+  const h=Math.floor(m/60),mn=m%60;
+  return h>0?(mn>0?`${h}h${String(mn).padStart(2,'0')}min`:`${h}h`):`${mn}min`;
+}
+function calculerHeures(s){
+  if(!s) return null;
+  const em=heureEnMin(s.entree_matin),sp=heureEnMin(s.sortie_pause);
+  const rp=heureEnMin(s.reprise),ss=heureEnMin(s.sortie_soir);
+  let total=0,ok=false;
+  if(em!==null&&sp!==null&&sp>em){total+=sp-em;ok=true;}
+  if(rp!==null&&ss!==null&&ss>rp){total+=ss-rp;ok=true;}
+  return ok?total:null;
+}
+function estRetard(s){
+  if(!s||!s.entree_matin) return false;
+  return heureEnMin(s.entree_matin)>heureEnMin(HORAIRES.entree_matin)+HORAIRES.tolerance_retard;
+}
+
+/* ══════════════════════════════════════════════
+   FIREBASE — ÉCOUTE EN TEMPS RÉEL
+   ══════════════════════════════════════════════ */
+function demarrerEcouteFirebase(){
+  // Écouter les pointages en temps réel
+  const presRef = ref(db, 'presences');
+  onValue(presRef, (snapshot)=>{
+    const data = snapshot.val() || {};
+
+    // Détecter nouveaux pointages du jour
+    const tk = todayKey();
+    const ancienJour = derniersSnap[tk] || {};
+    const nouveauJour = data[tk] || {};
+    employes.forEach(nom=>{
+      const ancien  = ancienJour[nom]  || {};
+      const nouveau = nouveauJour[nom] || {};
+      SLOTS_KEYS.forEach(slot=>{
+        if(nouveau[slot] && !ancien[slot]){
+          afficherAlertePointage(nom, slot, nouveau[slot]);
+        }
+      });
+    });
+
+    derniersSnap = JSON.parse(JSON.stringify(data));
+    presencesData = data;
+    majStatutFirebase(true);
+    rafraichirPageActive();
+  }, (error)=>{
+    console.error('Firebase error:', error);
+    majStatutFirebase(false);
+  });
+
+  // Écouter la liste des employés
+  const empRef = ref(db, 'employes');
+  onValue(empRef, (snapshot)=>{
+    const data = snapshot.val();
+    if(data && Array.isArray(data)) employes = data;
+    rafraichirPageActive();
+  });
+
+  // Écouter les supprimés
+  const supRef = ref(db, 'supprimes');
+  onValue(supRef, (snapshot)=>{
+    const data = snapshot.val();
+    if(data && Array.isArray(data)) supprimes = data;
+  });
+}
+
+/* ── Sauvegarder un pointage dans Firebase ── */
+async function sauvegarderPointage(nom, slot, heure){
+  const tk = todayKey();
+  const nomSecurise = nom.replace(/[.#$[\]]/g,'_');
+  const pointRef = ref(db, `presences/${tk}/${nomSecurise}/${slot}`);
+  await set(pointRef, heure);
+}
+
+/* ── Sauvegarder la liste employés ── */
+async function sauvegarderEmployes(){
+  await set(ref(db,'employes'), employes);
+}
+async function sauvegarderSupprimes(){
+  await set(ref(db,'supprimes'), supprimes);
+}
+
+/* ── Initialiser les employés dans Firebase si vide ── */
+async function initialiserFirebase(){
+  const snap = await get(ref(db,'employes'));
+  if(!snap.exists()){
+    await set(ref(db,'employes'), employes);
+  } else {
+    employes = snap.val() || employes;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   STATUT FIREBASE
+   ══════════════════════════════════════════════ */
+function majStatutFirebase(enLigne){
+  const dot   = document.getElementById('serverDot');
+  const label = document.getElementById('serverLabel');
+  const badge = document.getElementById('settingsFirebaseStatus');
+  if(dot)   dot.className='dot'+(enLigne?' online':'');
+  if(label) label.textContent=enLigne?'En ligne':'Hors ligne';
+  if(badge){badge.className='badge '+(enLigne?'present':'absent');badge.textContent=enLigne?'En ligne':'Hors ligne';}
+}
+
+/* ══════════════════════════════════════════════
+   HORLOGE
+   ══════════════════════════════════════════════ */
+function majHorloge(){
+  const now=new Date();
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+  const t=document.getElementById('clockTime');
+  const d=document.getElementById('clockDate');
+  const mo=document.getElementById('clockMonth');
+  if(t) t.textContent=`${h}:${m}:${s}`;
+  if(d) d.textContent=`${JOURS_NOMS[now.getDay()]} ${now.getDate()}`;
+  if(mo) mo.textContent=`${MOIS_NOMS[now.getMonth()]} ${now.getFullYear()}`;
+}
+setInterval(majHorloge,1000);
+
+/* ══════════════════════════════════════════════
+   TOAST & ALERTES
+   ══════════════════════════════════════════════ */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+function afficherAlertePointage(nom,slot,heure){
+  const a=document.getElementById('alertePointage');
+  const slotLabel=SLOTS_LABELS[SLOTS_KEYS.indexOf(slot)]||slot;
+  a.innerHTML=`📡 ${nom} — ${slotLabel} — ${heure}`;
+  a.classList.add('show');
+  setTimeout(()=>a.classList.remove('show'),5000);
+}
+
+/* ══════════════════════════════════════════════
+   LOGIN
+   ══════════════════════════════════════════════ */
+window.login = function(){
+  const v=document.getElementById('password').value;
+  if(v===mainPassword){
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    initAll();
+  } else {
+    document.getElementById('error').textContent='Mot de passe incorrect.';
+  }
+};
+
+/* ══════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════ */
+async function initAll(){
+  majHorloge();
+  await initialiserFirebase();
+  demarrerEcouteFirebase();
+  renderHome();renderMembres();renderPresencesJour();
+  renderAbsences();renderSupprimes();initCalendar();initMoisGrid();
+  document.getElementById('todayDateLabel').textContent=
+    new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+   ══════════════════════════════════════════════ */
+let currentPage='homePage';
+window.goPage = function(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  currentPage=id;
+  rafraichirPageActive();
+  window.scrollTo(0,0);
+};
+function rafraichirPageActive(){
+  if(currentPage==='homePage')          renderHome();
+  if(currentPage==='presencesPage')     renderPresencesJour();
+  if(currentPage==='absencesPage')      renderAbsences();
+  if(currentPage==='membresPage')       renderMembres();
+  if(currentPage==='supprimesPage')     renderSupprimes();
+  if(currentPage==='historiqueCalPage') renderCalendar();
+  if(currentPage==='historiqueMoisPage')initMoisGrid();
+}
+window.openMenu=function(){document.getElementById('sideMenu').classList.add('open');document.getElementById('overlay').classList.add('open');};
+window.closeMenu=function(){document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');};
+
+/* ══════════════════════════════════════════════
+   RENDERS
+   ══════════════════════════════════════════════ */
+function renderHome(){
+  const tk=todayKey(),jour=presencesData[tk]||{};
+  let presents=0,retards=0;
+  employes.forEach(n=>{const s=jour[n];if(s&&s.entree_matin){presents++;if(estRetard(s))retards++;}});
+  document.getElementById('presentCount').textContent=presents;
+  document.getElementById('absentCount').textContent=employes.length-presents;
+  document.getElementById('retardCount').textContent=retards;
+  const panel=document.getElementById('homePresencePanel');
+  const lignes=employes.map(n=>{
+    const s=jour[n];if(!s||!s.entree_matin)return'';
+    const retard=estRetard(s);
+    return`<div class="list-item"><span class="nom">${n}${retard?' ⚠️':''}</span>
+      <span class="badge ${retard?'warning':'present'}">${s.entree_matin} → ${s.sortie_soir||'en cours'}</span></div>`;
+  }).filter(Boolean);
+  panel.innerHTML=lignes.length?lignes.join(''):'<p class="empty-msg">Aucun pointage aujourd\'hui.</p>';
+}
+
+function renderPresencesJour(){
+  const tk=todayKey(),jour=presencesData[tk]||{};
+  const panel=document.getElementById('presencePanel2');
+  const html=employes.map(n=>{
+    const s=jour[n]||{};
+    const slots=SLOTS_KEYS.map((k,i)=>{const v=s[k];const cls=v?(estRetard(s)&&k==='entree_matin'?'warn':'ok'):'miss';
+      return`<span class="slot ${cls}">${SLOTS_LABELS[i]}: ${v||'—'}</span>`;}).join('');
+    const total=calculerHeures(s),retard=estRetard(s);
+    return`<div class="pointage-row">
+      <div class="pointage-nom">👤 ${n}${retard?' <span style="color:var(--orange);font-size:10px;"> RETARD</span>':''}</div>
+      <div class="pointage-slots">${slots}</div>
+      ${s.entree_matin?`<div class="pointage-total">⏱ ${total!==null?minEnLabel(total):'En cours'}</div>`
+        :'<div class="pointage-total" style="color:#445;">Absent</div>'}
+    </div>`;}).join('');
+  panel.innerHTML=html||'<p class="empty-msg">Aucun pointage.</p>';
+}
+
+function renderMembres(){
+  const panel=document.getElementById('membresPanel');
+  if(!employes.length){panel.innerHTML='<p class="empty-msg">Aucun employé.</p>';return;}
+  panel.innerHTML=employes.map(n=>`<div class="list-item"><span class="nom">👤 ${n}</span>
+    <div style="display:flex;gap:8px;align-items:center;"><span class="badge present">Actif</span>
+    ${isAdmin?`<button onclick="supprimerEmploye('${n}')" style="background:rgba(255,59,59,0.15);border:1px solid var(--red);color:var(--red);padding:3px 8px;border-radius:14px;font-size:11px;font-weight:700;">Suppr.</button>`:''}
+    </div></div>`).join('');
+}
+
+function renderAbsences(){
+  const jour=presencesData[todayKey()]||{};
+  const absents=employes.filter(n=>!jour[n]||!jour[n].entree_matin);
+  const panel=document.getElementById('absencesPanel');
+  if(!absents.length){panel.innerHTML='<p class="empty-msg">Tous les employés sont présents ✓</p>';return;}
+  panel.innerHTML=absents.map(n=>`<div class="list-item"><span class="nom">👤 ${n}</span><span class="badge absent">Absent</span></div>`).join('');
+}
+
+function renderSupprimes(){
+  const panel=document.getElementById('supprimesPanel');
+  if(!supprimes.length){panel.innerHTML='<p class="empty-msg">Aucun employé supprimé.</p>';return;}
+  panel.innerHTML=supprimes.map(s=>`<div class="list-item"><span class="nom">🗑️ ${s.nom}</span>
+    <div style="display:flex;gap:8px;align-items:center;"><span class="badge supprime">Supprimé</span>
+    ${isAdmin?`<button onclick="restaurerEmploye('${s.nom}')" style="background:rgba(0,255,136,0.1);border:1px solid var(--green);color:var(--green);padding:3px 8px;border-radius:14px;font-size:11px;font-weight:700;">Restaurer</button>`:''}
+    </div></div>`).join('');
+}
+
+/* ══════════════════════════════════════════════
+   ACTIONS EMPLOYÉS
+   ══════════════════════════════════════════════ */
+window.supprimerEmploye=async function(nom){
+  if(!confirm(`Supprimer ${nom} ?`))return;
+  employes=employes.filter(e=>e!==nom);
+  supprimes.push({nom,date:new Date().toLocaleDateString('fr-FR')});
+  await sauvegarderEmployes();await sauvegarderSupprimes();
+  renderMembres();renderSupprimes();renderHome();renderAbsences();
+  showToast(`${nom} supprimé`);
+};
+window.restaurerEmploye=async function(nom){
+  supprimes=supprimes.filter(s=>s.nom!==nom);
+  if(!employes.includes(nom))employes.push(nom);
+  await sauvegarderEmployes();await sauvegarderSupprimes();
+  renderMembres();renderSupprimes();renderHome();renderAbsences();
+  showToast(`${nom} restauré`);
+};
+
+/* ══════════════════════════════════════════════
+   CALENDRIER
+   ══════════════════════════════════════════════ */
+let calDate=new Date();
+function initCalendar(){renderCalendar();}
+function renderCalendar(){
+  const y=calDate.getFullYear(),m=calDate.getMonth();
+  document.getElementById('calMonthLabel').textContent=`${MOIS_NOMS[m]} ${y}`;
+  const premier=new Date(y,m,1).getDay(),nbJ=new Date(y,m+1,0).getDate(),ts=todayKey();
+  let html=JOURS_NOMS.map(j=>`<div class="cal-header">${j}</div>`).join('');
+  for(let i=0;i<premier;i++)html+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=nbJ;d++){
+    const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const jour=presencesData[key]||{};
+    const hasData=Object.values(jour).some(s=>s&&s.entree_matin);
+    const cls=key===ts?'today':hasData?'has-data':'';
+    html+=`<div class="cal-day ${cls}" onclick="telechargerJour('${key}')">${d}</div>`;
+  }
+  document.getElementById('calGrid').innerHTML=html;
+}
+window.calPrevMonth=function(){calDate.setMonth(calDate.getMonth()-1);renderCalendar();};
+window.calNextMonth=function(){calDate.setMonth(calDate.getMonth()+1);renderCalendar();};
+
+/* ══════════════════════════════════════════════
+   6 MOIS
+   ══════════════════════════════════════════════ */
+function initMoisGrid(){
+  const today=new Date();let html='';
+  for(let i=5;i>=0;i--){
+    const d=new Date(today.getFullYear(),today.getMonth()-i,1);
+    const y=d.getFullYear(),m=d.getMonth();
+    const prefix=`${y}-${String(m+1).padStart(2,'0')}`;
+    const jours=Object.keys(presencesData).filter(k=>k.startsWith(prefix));
+    let totalMin=0;
+    jours.forEach(k=>Object.values(presencesData[k]||{}).forEach(s=>{const h=calculerHeures(s);if(h)totalMin+=h;}));
+    html+=`<div class="month-card" onclick="telechargerMois('${prefix}','${MOIS_NOMS[m]} ${y}')">
+      <div class="mname">${MOIS_NOMS[m].substring(0,3).toUpperCase()}</div>
+      <div class="minfo">${y}</div>
+      <div class="minfo">${jours.length} jour(s)</div>
+      <div class="minfo" style="color:var(--cyan);margin-top:4px;">⏱ ${minEnLabel(totalMin)}</div>
+    </div>`;
+  }
+  document.getElementById('monthGrid').innerHTML=html;
+}
+
+/* ══════════════════════════════════════════════
+   CSV
+   ══════════════════════════════════════════════ */
+function genCSV(lignes,nom){
+  const uri='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(lignes.join('\n'));
+  const a=document.createElement('a');a.href=uri;a.download=nom+'.csv';a.click();
+}
+window.telechargerPointagesJour=function(){
+  const jour=presencesData[todayKey()]||{};
+  const lignes=['NOM,ENTREE_MATIN,SORTIE_PAUSE,REPRISE,SORTIE_SOIR,HEURES_TRAVAILLEES,RETARD'];
+  employes.forEach(n=>{const s=jour[n]||{};const h=calculerHeures(s);
+    lignes.push(`${n},${s.entree_matin||''},${s.sortie_pause||''},${s.reprise||''},${s.sortie_soir||''},${h!==null?minEnLabel(h):'Absent'},${estRetard(s)?'OUI':'NON'}`);});
+  genCSV(lignes,`Pointages_${todayKey()}`);showToast('Téléchargement lancé');
+};
+window.telechargerJour=function(key){
+  const jour=presencesData[key]||{};
+  if(!Object.values(jour).some(s=>s&&s.entree_matin)){showToast('Aucune donnée ce jour');return;}
+  const lignes=['NOM,ENTREE_MATIN,SORTIE_PAUSE,REPRISE,SORTIE_SOIR,HEURES_TRAVAILLEES,RETARD'];
+  employes.forEach(n=>{const s=jour[n]||{};const h=calculerHeures(s);
+    lignes.push(`${n},${s.entree_matin||''},${s.sortie_pause||''},${s.reprise||''},${s.sortie_soir||''},${h!==null?minEnLabel(h):'Absent'},${estRetard(s)?'OUI':'NON'}`);});
+  genCSV(lignes,`Pointages_${key}`);showToast('Téléchargement lancé');
+};
+window.telechargerMois=function(prefix,label){
+  const jours=Object.keys(presencesData).filter(k=>k.startsWith(prefix)).sort();
+  if(!jours.length){showToast('Aucune donnée');return;}
+  const lignes=[`RAPPORT MENSUEL — ${label}`,'','── DÉTAIL JOURNALIER ──',
+    'DATE,NOM,ENTREE_MATIN,SORTIE_PAUSE,REPRISE,SORTIE_SOIR,HEURES_TRAVAILLEES,RETARD'];
+  const totaux={};employes.forEach(n=>totaux[n]=0);
+  jours.forEach(k=>{const jour=presencesData[k]||{};
+    employes.forEach(n=>{const s=jour[n]||{};const h=calculerHeures(s);if(h)totaux[n]+=h;
+      lignes.push(`${k},${n},${s.entree_matin||''},${s.sortie_pause||''},${s.reprise||''},${s.sortie_soir||''},${h!==null?minEnLabel(h):'Absent'},${estRetard(s)?'OUI':'NON'}`);});});
+  lignes.push('','── TOTAL HEURES PAR EMPLOYÉ ──','NOM,HEURES_TOTALES,JOURS_TRAVAILLES,HEURES_THEORIQUES,ECART');
+  employes.forEach(n=>{
+    const joursT=jours.filter(k=>{const s=(presencesData[k]||{})[n];return s&&s.entree_matin;}).length;
+    const theo=HORAIRES.duree_theo_min*joursT,ecart=totaux[n]-theo;
+    lignes.push(`${n},${minEnLabel(totaux[n])},${joursT},${minEnLabel(theo)},${ecart>=0?'+'+minEnLabel(ecart):'-'+minEnLabel(Math.abs(ecart))}`);});
+  const tg=Object.values(totaux).reduce((a,b)=>a+b,0);
+  lignes.push('',`TOTAL GÉNÉRAL,${minEnLabel(tg)}`);
+  genCSV(lignes,`Rapport_${prefix}`);showToast(`Rapport ${label} téléchargé`);
+};
+window.telechargerAbsences=function(){
+  const jour=presencesData[todayKey()]||{};
+  const absents=employes.filter(n=>!jour[n]||!jour[n].entree_matin);
+  genCSV(['NOM,STATUT,DATE',...absents.map(n=>`${n},Absent,${todayKey()}`)],`Absences_${todayKey()}`);
+  showToast('Téléchargement lancé');
+};
+window.telechargerPresences30j=function(){
+  const today=new Date();
+  const lignes=['DATE,NOM,ENTREE_MATIN,SORTIE_PAUSE,REPRISE,SORTIE_SOIR,HEURES_TRAVAILLEES,RETARD'];
+  for(let d=0;d<30;d++){const date=new Date(today);date.setDate(today.getDate()-d);
+    const key=dateKey(date);const jour=presencesData[key]||{};
+    employes.forEach(n=>{const s=jour[n]||{};const h=calculerHeures(s);
+      lignes.push(`${key},${n},${s.entree_matin||''},${s.sortie_pause||''},${s.reprise||''},${s.sortie_soir||''},${h!==null?minEnLabel(h):'Absent'},${estRetard(s)?'OUI':'NON'}`);});}
+  genCSV(lignes,'Pointages_30j');showToast('Téléchargement lancé');
+};
+window.telechargerAbsencesAdmin=function(){
+  const today=new Date();const lignes=['DATE,NOM,STATUT'];
+  for(let d=0;d<30;d++){const date=new Date(today);date.setDate(today.getDate()-d);
+    const key=dateKey(date);const jour=presencesData[key]||{};
+    employes.forEach(n=>{if(!jour[n]||!jour[n].entree_matin)lignes.push(`${key},${n},Absent`);});}
+  genCSV(lignes,'Absences_30j');showToast('Téléchargement lancé');
+};
+
+/* ══════════════════════════════════════════════
+   ADMIN
+   ══════════════════════════════════════════════ */
+window.doAdminLogin=function(){if(isAdmin){goPage('settingsPage');return;}showModal('adminLogin');};
+
+/* ══════════════════════════════════════════════
+   MODALS
+   ══════════════════════════════════════════════ */
+window.showModal=function(type){
+  const box=document.getElementById('modalBox');
+  document.getElementById('modal').classList.add('open');
+  if(type==='addPointage'){
+    const opts=employes.map(e=>`<option value="${e}">${e}</option>`).join('');
+    const sOpts=SLOTS_KEYS.map((k,i)=>`<option value="${k}">${SLOTS_LABELS[i]}</option>`).join('');
+    box.innerHTML=`<h3>Simuler un pointage</h3>
+      <select class="modal-input" id="m_nom">${opts}</select>
+      <select class="modal-input" id="m_slot" onchange="majHeureDefaut()">${sOpts}</select>
+      <input class="modal-input" type="time" id="m_heure" value="08:00">
+      <div class="modal-row">
+        <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-dl" onclick="ajouterPointage()">Confirmer</button>
+      </div>`;majHeureDefaut();
+  }else if(type==='addMembre'){
+    box.innerHTML=`<h3>Ajouter un employé</h3>
+      <input class="modal-input" type="text" id="m_newnom" placeholder="Nom complet" style="text-transform:uppercase;">
+      <div class="modal-row">
+        <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-dl" onclick="ajouterMembre()">Ajouter</button>
+      </div>`;
+  }else if(type==='adminLogin'){
+    box.innerHTML=`<h3>🔐 Code Administrateur</h3>
+      <input class="modal-input" type="password" id="m_adminpwd" placeholder="Code admin">
+      <p id="m_adminErr" style="color:var(--red);font-size:12px;margin-bottom:10px;"></p>
+      <div class="modal-row">
+        <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-dl" onclick="validerAdmin()">Valider</button>
+      </div>`;
+  }else if(type==='changeMainPwd'){
+    box.innerHTML=`<h3>Changer mot de passe</h3>
+      <input class="modal-input" type="password" id="m_pwd1" placeholder="Nouveau mot de passe">
+      <input class="modal-input" type="password" id="m_pwd2" placeholder="Confirmer">
+      <p id="m_pwdErr" style="color:var(--red);font-size:12px;margin-bottom:10px;"></p>
+      <div class="modal-row">
+        <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-dl" onclick="changerMainPwd()">Enregistrer</button>
+      </div>`;
+  }else if(type==='changeAdminPwd'){
+    box.innerHTML=`<h3>Changer code admin</h3>
+      <input class="modal-input" type="password" id="m_apwd1" placeholder="Nouveau code">
+      <input class="modal-input" type="password" id="m_apwd2" placeholder="Confirmer">
+      <p id="m_apwdErr" style="color:var(--red);font-size:12px;margin-bottom:10px;"></p>
+      <div class="modal-row">
+        <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-dl" onclick="changerAdminPwd()">Enregistrer</button>
+      </div>`;
+  }
+};
+window.closeModal=function(){document.getElementById('modal').classList.remove('open');};
+window.majHeureDefaut=function(){const s=document.getElementById('m_slot');const h=document.getElementById('m_heure');if(s&&h)h.value=HEURES_DEF[s.value]||'08:00';};
+
+window.ajouterPointage=async function(){
+  const nom=document.getElementById('m_nom').value;
+  const slot=document.getElementById('m_slot').value;
+  const heure=document.getElementById('m_heure').value;
+  await sauvegarderPointage(nom,slot,heure);
+  closeModal();
+  showToast(`${nom} — ${SLOTS_LABELS[SLOTS_KEYS.indexOf(slot)]} : ${heure}`);
+};
+window.ajouterMembre=async function(){
+  const nom=document.getElementById('m_newnom').value.toUpperCase().trim();
+  if(!nom){showToast('Entrez un nom');return;}
+  if(employes.includes(nom)){showToast('Déjà existant');return;}
+  employes.push(nom);await sauvegarderEmployes();
+  closeModal();showToast(`${nom} ajouté`);
+};
+window.validerAdmin=function(){
+  const v=document.getElementById('m_adminpwd').value;
+  if(v===adminPassword){
+    isAdmin=true;closeModal();goPage('settingsPage');
+    document.getElementById('adminDownloads').style.display='block';
+    renderMembres();renderSupprimes();showToast('Mode admin activé ✓');
+  }else{document.getElementById('m_adminErr').textContent='Code incorrect.';}
+};
+window.changerMainPwd=function(){
+  const p1=document.getElementById('m_pwd1').value,p2=document.getElementById('m_pwd2').value;
+  if(!p1){document.getElementById('m_pwdErr').textContent='Champ vide';return;}
+  if(p1!==p2){document.getElementById('m_pwdErr').textContent='Ne correspondent pas';return;}
+  mainPassword=p1;closeModal();showToast('Mot de passe modifié ✓');
+};
+window.changerAdminPwd=function(){
+  const p1=document.getElementById('m_apwd1').value,p2=document.getElementById('m_apwd2').value;
+  if(!p1){document.getElementById('m_apwdErr').textContent='Champ vide';return;}
+  if(p1!==p2){document.getElementById('m_apwdErr').textContent='Ne correspondent pas';return;}
+  adminPassword=p1;closeModal();showToast('Code admin modifié ✓');
+};
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+</script>
+</body>
+</html>
