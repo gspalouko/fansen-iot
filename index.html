@@ -575,8 +575,15 @@ function afficherAlertePointage(nom,type,num,heure){
 /* ══════════════════════════════════════════════
    LOGIN
    ══════════════════════════════════════════════ */
-window.login=function(){
+window.login=async function(){
   const v=document.getElementById('password').value;
+  // Charger le vrai mot de passe depuis Firebase avant de vérifier
+  try{
+    const snap = await get(ref(db,'config/mainPassword'));
+    if(snap.exists()) mainPassword=snap.val();
+    else await set(ref(db,'config/mainPassword'), mainPassword);
+  }catch(e){ console.log('Firebase KO, utilisation mot de passe local'); }
+
   if(v===mainPassword){
     document.getElementById('loginPage').style.display='none';
     document.getElementById('dashboard').style.display='block';
@@ -1009,8 +1016,13 @@ window.ajouterMembre=async function(){
   closeModal();showToast(`${nom} ajouté`);
 };
 
-window.validerAdmin=function(){
+window.validerAdmin=async function(){
   const v=document.getElementById('m_adminpwd').value;
+  // Charger le vrai code admin depuis Firebase avant de vérifier
+  try{
+    const snap=await get(ref(db,'config/adminPassword'));
+    if(snap.exists()) adminPassword=snap.val();
+  }catch(e){}
   if(v===adminPassword){
     isAdmin=true;closeModal();goPage('settingsPage');
     document.getElementById('adminDownloads').style.display='block';
