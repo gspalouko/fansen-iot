@@ -8,7 +8,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --cyan:#00e5ff;--green:#00ff88;--orange:#ff9500;--red:#ff3b3b;
+  --cyan:#00e5ff;--green:#00ff88;--orange:#ff9500;--red:#ff3b3b;--purple:#b388ff;
   --bg:rgba(5,10,25,0.92);--panel:rgba(10,20,45,0.90);--border:rgba(0,255,255,0.18);
 }
 body{
@@ -18,6 +18,7 @@ body{
   background-size:cover;background-position:center;background-attachment:fixed;
   color:white;min-height:100vh;overflow-x:hidden;
 }
+/* LOGIN */
 #loginPage{display:flex;justify-content:center;align-items:center;height:100vh;padding:20px;}
 .login-box{width:100%;max-width:420px;background:rgba(5,10,25,0.92);border:1px solid var(--border);padding:40px 35px;border-radius:24px;backdrop-filter:blur(14px);box-shadow:0 0 40px rgba(0,229,255,0.12);text-align:center;}
 .login-box h1{font-family:'Orbitron',monospace;font-size:30px;color:var(--cyan);letter-spacing:3px;margin-bottom:8px;}
@@ -28,88 +29,122 @@ select option{background:#0a1428;}
 button{cursor:pointer;}
 .btn-primary{width:100%;padding:15px;border:none;border-radius:14px;background:linear-gradient(135deg,#00bcd4,#0097a7);color:white;font-size:16px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:1px;transition:0.3s;}
 .btn-primary:hover{background:linear-gradient(135deg,#00e5ff,#00bcd4);transform:translateY(-1px);}
+/* DASHBOARD */
 #dashboard{display:none;}
-header{background:var(--bg);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;backdrop-filter:blur(12px);z-index:100;border-bottom:1px solid var(--border);}
-.logo{font-family:'Orbitron',monospace;font-size:14px;color:var(--cyan);letter-spacing:2px;}
-.menu-btn{font-size:28px;background:none;border:none;color:white;}
-.server-status{display:flex;align-items:center;gap:6px;font-size:11px;}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--red);transition:0.5s;}
-.dot.online{background:var(--green);box-shadow:0 0 8px var(--green);}
+header{background:var(--bg);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;backdrop-filter:blur(12px);z-index:100;border-bottom:1px solid var(--border);}
+.logo{font-family:'Orbitron',monospace;font-size:13px;color:var(--cyan);letter-spacing:2px;}
+.header-right{display:flex;align-items:center;gap:10px;}
+.status-pill{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:10px;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--red);transition:0.5s;}
+.dot.online{background:var(--green);box-shadow:0 0 6px var(--green);}
+.dot.offline{background:var(--orange);}
+.menu-btn{font-size:26px;background:none;border:none;color:white;}
+/* PAGES */
 .page{display:none;padding:0 0 100px;}
 .page.active{display:block;}
-.hero{padding:26px 20px 8px;text-align:center;}
-.hero h1{font-family:'Orbitron',monospace;font-size:16px;line-height:1.6;color:var(--cyan);margin-bottom:8px;letter-spacing:1px;}
-.hero p{color:#aaccd8;font-size:13px;line-height:1.7;}
-.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:14px 16px;}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:18px 10px;text-align:center;backdrop-filter:blur(10px);}
-.card h2{font-size:11px;color:#aaa;letter-spacing:1px;margin-bottom:10px;text-transform:uppercase;}
-.number{font-family:'Orbitron',monospace;font-size:34px;font-weight:700;color:var(--cyan);}
+/* HERO */
+.hero{padding:24px 16px 6px;text-align:center;}
+.hero h1{font-family:'Orbitron',monospace;font-size:15px;line-height:1.6;color:var(--cyan);margin-bottom:6px;letter-spacing:1px;}
+.hero p{color:#aaccd8;font-size:12px;line-height:1.7;}
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:12px 14px;}
+.cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 14px 10px;}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:16px 8px;text-align:center;backdrop-filter:blur(10px);}
+.card h2{font-size:10px;color:#aaa;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;}
+.number{font-family:'Orbitron',monospace;font-size:32px;font-weight:700;color:var(--cyan);}
 .number.green{color:var(--green);}
 .number.orange{color:var(--orange);}
 .number.red{color:var(--red);}
-.clock-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
-.clock-time{font-family:'Orbitron',monospace;font-size:20px;font-weight:700;color:var(--cyan);letter-spacing:2px;}
-.clock-date{font-size:11px;color:#7ab;letter-spacing:1px;text-transform:uppercase;}
-.clock-month{font-size:12px;color:var(--green);font-weight:600;margin-top:2px;}
-.section{padding:12px 16px;}
-.section-title{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;color:#7ab;margin-bottom:12px;text-transform:uppercase;}
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:16px;backdrop-filter:blur(10px);}
-.list-item{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;}
+.number.purple{color:var(--purple);}
+.number.small{font-size:22px;}
+.clock-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
+.clock-time{font-family:'Orbitron',monospace;font-size:19px;font-weight:700;color:var(--cyan);letter-spacing:2px;}
+.clock-date{font-size:10px;color:#7ab;letter-spacing:1px;text-transform:uppercase;}
+.clock-month{font-size:11px;color:var(--green);font-weight:600;margin-top:2px;}
+/* SECTION */
+.section{padding:10px 14px;}
+.section-title{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:#7ab;margin-bottom:10px;text-transform:uppercase;}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:14px;backdrop-filter:blur(10px);}
+/* LIST */
+.list-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;}
 .list-item:last-child{border:none;}
 .list-item .nom{font-weight:600;}
-.badge{font-weight:700;font-size:11px;padding:3px 9px;border-radius:20px;}
+.badge{font-weight:700;font-size:11px;padding:3px 8px;border-radius:20px;}
 .badge.present{background:rgba(0,255,136,0.15);color:var(--green);}
 .badge.warning{background:rgba(255,149,0,0.15);color:var(--orange);}
 .badge.absent{background:rgba(255,59,59,0.15);color:var(--red);}
+.badge.encours{background:rgba(179,136,255,0.15);color:var(--purple);}
 .badge.supprime{background:rgba(200,0,0,0.15);color:#ff6060;}
-.pointage-row{padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.badge.hors-ligne{background:rgba(255,149,0,0.15);color:var(--orange);}
+/* Pointage détaillé */
+.pointage-row{padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
 .pointage-row:last-child{border:none;}
-.pointage-nom{font-weight:700;font-size:14px;margin-bottom:5px;}
-.pointage-slots{display:flex;gap:5px;flex-wrap:wrap;}
-.slot{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:600;}
-.slot.ok{background:rgba(0,255,136,0.15);color:var(--green);}
-.slot.miss{background:rgba(255,59,59,0.06);color:#445;border:1px dashed rgba(255,59,59,0.2);}
-.slot.warn{background:rgba(255,149,0,0.15);color:var(--orange);}
-.pointage-total{font-size:11px;color:var(--cyan);margin-top:4px;font-family:'Orbitron',monospace;}
-.btn-dl{width:100%;padding:12px;border:none;border-radius:14px;background:linear-gradient(135deg,#00bcd4,#0097a7);color:white;font-size:14px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:1px;margin-top:10px;transition:0.3s;}
+.pointage-nom{font-weight:700;font-size:13px;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;}
+.pointage-slots{display:flex;gap:4px;flex-wrap:wrap;}
+.slot{font-size:10px;padding:3px 7px;border-radius:8px;font-weight:600;}
+.slot.entree{background:rgba(0,255,136,0.15);color:var(--green);}
+.slot.sortie{background:rgba(255,59,59,0.12);color:#ff8080;}
+.slot.encours{background:rgba(179,136,255,0.15);color:var(--purple);}
+.slot.vide{background:rgba(255,255,255,0.04);color:#445;border:1px dashed rgba(255,255,255,0.1);}
+.pointage-total{font-size:11px;color:var(--cyan);margin-top:5px;font-family:'Orbitron',monospace;}
+/* Barre progression heures */
+.progress-bar{background:rgba(255,255,255,0.06);border-radius:10px;height:5px;margin-top:5px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width 0.5s;}
+.progress-fill.complet{background:linear-gradient(90deg,var(--green),#00ff44);}
+.progress-fill.depasse{background:linear-gradient(90deg,var(--orange),var(--red));}
+/* BTN */
+.btn-dl{width:100%;padding:12px;border:none;border-radius:14px;background:linear-gradient(135deg,#00bcd4,#0097a7);color:white;font-size:13px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:1px;margin-top:10px;transition:0.3s;}
 .btn-dl:hover{filter:brightness(1.15);}
 .btn-dl.ghost{background:rgba(0,188,212,0.10);border:1px solid var(--border);}
 .btn-cancel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#aaa;}
-#sideMenu{position:fixed;top:0;right:-320px;width:300px;height:100%;background:rgba(4,8,22,0.99);padding:25px;transition:0.4s cubic-bezier(.4,0,.2,1);z-index:999;overflow-y:auto;backdrop-filter:blur(16px);border-left:1px solid var(--border);}
+/* SIDE MENU */
+#sideMenu{position:fixed;top:0;right:-320px;width:290px;height:100%;background:rgba(4,8,22,0.99);padding:22px;transition:0.4s cubic-bezier(.4,0,.2,1);z-index:999;overflow-y:auto;backdrop-filter:blur(16px);border-left:1px solid var(--border);}
 #sideMenu.open{right:0;}
-.side-link{padding:13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:14px;margin-bottom:10px;cursor:pointer;transition:0.2s;font-size:14px;}
+.side-link{padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:14px;margin-bottom:9px;cursor:pointer;transition:0.2s;font-size:13px;}
 .side-link:hover{background:rgba(0,229,255,0.08);border-color:var(--border);}
+/* MODAL */
 #modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:3000;justify-content:center;align-items:center;padding:20px;}
 #modal.open{display:flex;}
-.modal-box{background:rgba(5,12,30,0.98);border:1px solid var(--border);border-radius:24px;padding:26px;width:100%;max-width:400px;backdrop-filter:blur(16px);max-height:90vh;overflow-y:auto;}
-.modal-box h3{font-family:'Orbitron',monospace;color:var(--cyan);margin-bottom:16px;font-size:14px;}
+.modal-box{background:rgba(5,12,30,0.98);border:1px solid var(--border);border-radius:22px;padding:24px;width:100%;max-width:400px;backdrop-filter:blur(16px);max-height:90vh;overflow-y:auto;}
+.modal-box h3{font-family:'Orbitron',monospace;color:var(--cyan);margin-bottom:14px;font-size:13px;}
 .modal-row{display:flex;gap:10px;}
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:12px;}
-.cal-header{font-size:10px;color:#7ab;text-align:center;padding:4px 0;font-weight:600;}
-.cal-day{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);transition:0.2s;}
+/* CALENDAR */
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px;}
+.cal-header{font-size:9px;color:#7ab;text-align:center;padding:3px 0;font-weight:600;}
+.cal-day{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);transition:0.2s;}
 .cal-day:hover:not(.empty){background:rgba(0,229,255,0.15);border-color:var(--cyan);}
 .cal-day.empty{background:none;border:none;cursor:default;}
 .cal-day.has-data{background:rgba(0,229,255,0.12);border-color:rgba(0,229,255,0.3);color:var(--cyan);}
 .cal-day.today{background:rgba(0,255,136,0.15);border-color:var(--green);color:var(--green);}
-.month-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px;}
-.month-card{background:rgba(0,229,255,0.06);border:1px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;cursor:pointer;transition:0.2s;}
+/* MONTHS */
+.month-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px;}
+.month-card{background:rgba(0,229,255,0.06);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:0.2s;}
 .month-card:hover{background:rgba(0,229,255,0.14);transform:translateY(-2px);}
-.month-card .mname{font-family:'Orbitron',monospace;font-size:13px;color:var(--cyan);margin-bottom:4px;}
-.month-card .minfo{font-size:11px;color:#7ab;margin-top:2px;}
-.bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:rgba(4,8,22,0.97);display:flex;justify-content:space-around;padding:8px 5px 12px;border-top:1px solid var(--border);z-index:100;}
-.bottom-nav div{text-align:center;font-size:10px;color:#889;cursor:pointer;transition:0.2s;}
+.month-card .mname{font-family:'Orbitron',monospace;font-size:12px;color:var(--cyan);margin-bottom:3px;}
+.month-card .minfo{font-size:10px;color:#7ab;margin-top:2px;}
+/* NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:rgba(4,8,22,0.97);display:flex;justify-content:space-around;padding:7px 5px 11px;border-top:1px solid var(--border);z-index:100;}
+.bottom-nav div{text-align:center;font-size:9px;color:#889;cursor:pointer;transition:0.2s;}
 .bottom-nav div:hover,.bottom-nav div.active-nav{color:var(--cyan);}
-.bottom-nav span{display:block;font-size:20px;margin-bottom:2px;}
+.bottom-nav span{display:block;font-size:19px;margin-bottom:2px;}
 #overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:998;}
 #overlay.open{display:block;}
-.empty-msg{text-align:center;color:#445;padding:26px 0;font-size:13px;}
-.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:rgba(0,229,255,0.15);border:1px solid var(--cyan);color:var(--cyan);padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
+.empty-msg{text-align:center;color:#445;padding:24px 0;font-size:12px;}
+/* TOAST */
+.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:rgba(0,229,255,0.15);border:1px solid var(--cyan);color:var(--cyan);padding:9px 18px;border-radius:28px;font-size:12px;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
-.alerte-pointage{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:rgba(0,255,136,0.15);border:2px solid var(--green);color:var(--green);padding:14px 24px;border-radius:16px;font-size:15px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.4s;pointer-events:none;text-align:center;white-space:nowrap;box-shadow:0 0 20px rgba(0,255,136,0.3);}
+/* Alerte pointage */
+.alerte-pointage{position:fixed;top:65px;left:50%;transform:translateX(-50%);background:rgba(0,255,136,0.15);border:2px solid var(--green);color:var(--green);padding:12px 20px;border-radius:14px;font-size:13px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.4s;pointer-events:none;text-align:center;box-shadow:0 0 20px rgba(0,255,136,0.25);}
 .alerte-pointage.show{opacity:1;}
-.info-box{background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);border-radius:14px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:#aaccd8;line-height:1.8;}
+/* Alerte hors ligne */
+.alerte-offline{position:fixed;top:65px;left:50%;transform:translateX(-50%);background:rgba(255,149,0,0.15);border:2px solid var(--orange);color:var(--orange);padding:10px 18px;border-radius:14px;font-size:12px;font-weight:700;z-index:9997;opacity:0;transition:opacity 0.4s;pointer-events:none;text-align:center;}
+.alerte-offline.show{opacity:1;}
+.info-box{background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);border-radius:12px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:#aaccd8;line-height:1.9;}
 .info-box strong{color:var(--cyan);}
-footer{padding:14px 20px 100px;text-align:center;font-size:11px;color:#556;}
+footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
+/* Bandeau hors ligne ESP32 */
+.bandeau-offline{display:none;background:rgba(255,149,0,0.12);border-bottom:1px solid var(--orange);padding:6px 16px;text-align:center;font-size:11px;color:var(--orange);font-weight:600;}
+.bandeau-offline.show{display:block;}
 </style>
 </head>
 <body>
@@ -121,18 +156,28 @@ footer{padding:14px 20px 100px;text-align:center;font-size:11px;color:#556;}
     <p class="sub">Système automatisé de gestion de la présence et du pointage des ouvriers dans une entreprise industrielle.</p>
     <input type="password" id="password" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')login()">
     <button class="btn-primary" onclick="login()">Connexion</button>
-    <p id="error" style="margin-top:10px;color:var(--red);font-size:13px;"></p>
+    <p id="error" style="margin-top:10px;color:var(--red);font-size:12px;"></p>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard">
+
+  <!-- Bandeau hors ligne -->
+  <div class="bandeau-offline" id="bandeauOffline">
+    ⚠️ ESP32 hors ligne — Données sauvegardées sur SD — Sync automatique au retour
+  </div>
+
   <header>
     <div class="logo">FANSEN • ESP32 • IoT</div>
-    <div style="display:flex;align-items:center;gap:14px;">
-      <div class="server-status">
-        <div class="dot" id="serverDot"></div>
-        <span id="serverLabel" style="color:#889;font-size:11px;">Firebase</span>
+    <div class="header-right">
+      <div class="status-pill">
+        <div class="dot" id="dotFirebase"></div>
+        <span id="lblFirebase" style="color:#889;">Firebase</span>
+      </div>
+      <div class="status-pill">
+        <div class="dot" id="dotEsp"></div>
+        <span id="lblEsp" style="color:#889;">ESP32</span>
       </div>
       <button class="menu-btn" onclick="openMenu()">⋮</button>
     </div>
@@ -140,9 +185,9 @@ footer{padding:14px 20px 100px;text-align:center;font-size:11px;color:#556;}
 
   <div id="overlay" onclick="closeMenu()"></div>
   <div id="sideMenu">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <h2 style="font-family:'Orbitron',monospace;color:var(--cyan);font-size:14px;">Menu</h2>
-      <button onclick="closeMenu()" style="background:none;border:none;color:white;font-size:24px;">✕</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h2 style="font-family:'Orbitron',monospace;color:var(--cyan);font-size:13px;">Menu</h2>
+      <button onclick="closeMenu()" style="background:none;border:none;color:white;font-size:22px;">✕</button>
     </div>
     <div class="side-link" onclick="goPage('homePage');closeMenu()">🏠 Accueil</div>
     <div class="side-link" onclick="goPage('membresPage');closeMenu()">👥 Liste des membres</div>
@@ -154,12 +199,13 @@ footer{padding:14px 20px 100px;text-align:center;font-size:11px;color:#556;}
     <div class="side-link" onclick="doAdminLogin();closeMenu()">🔐 Administration</div>
   </div>
 
-  <!-- ACCUEIL -->
+  <!-- ══ ACCUEIL ══ -->
   <div id="homePage" class="page active">
     <section class="hero">
       <h1>SYSTÈME DE PRÉSENCE ET POINTAGE</h1>
-      <p>Plateforme industrielle basée sur ESP32 &amp; IoT</p>
+      <p>Plateforme industrielle ESP32 &amp; IoT — Temps réel</p>
     </section>
+    <!-- Ligne 1 : 4 stats -->
     <div class="cards">
       <div class="card"><h2>Présents</h2><div class="number green" id="presentCount">0</div></div>
       <div class="card"><h2>Absents</h2><div class="number red" id="absentCount">0</div></div>
@@ -169,6 +215,12 @@ footer{padding:14px 20px 100px;text-align:center;font-size:11px;color:#556;}
         <div class="clock-date" id="clockDate">---</div>
         <div class="clock-month" id="clockMonth">---</div>
       </div>
+    </div>
+    <!-- Ligne 2 : 3 stats supplémentaires -->
+    <div class="cards-3">
+      <div class="card"><h2>Intérieur</h2><div class="number small purple" id="interieurCount">0</div></div>
+      <div class="card"><h2>Complets</h2><div class="number small green" id="completCount">0</div></div>
+      <div class="card"><h2>En cours</h2><div class="number small orange" id="encoursCount">0</div></div>
     </div>
     <div class="section">
       <button class="btn-dl" onclick="showModal('addPointage')">＋ Simuler un pointage</button>
@@ -180,25 +232,25 @@ footer{padding:14px 20px 100px;text-align:center;font-size:11px;color:#556;}
     <footer>Projet de soutenance — Gaspar GSP | ESP32 • IoT • Électrotechnique</footer>
   </div>
 
-  <!-- MEMBRES -->
+  <!-- ══ MEMBRES ══ -->
   <div id="membresPage" class="page">
     <section class="hero"><h1>LISTE DES MEMBRES</h1></section>
     <section class="section">
       <div class="section-title">Tous les employés</div>
       <div class="panel" id="membresPanel"></div>
-      <button class="btn-dl" onclick="showModal('addMembre')" style="margin-top:12px;">＋ Ajouter un employé</button>
+      <button class="btn-dl" onclick="showModal('addMembre')" style="margin-top:10px;">＋ Ajouter un employé</button>
     </section>
   </div>
 
-  <!-- POINTAGES DU JOUR -->
+  <!-- ══ POINTAGES DU JOUR ══ -->
   <div id="presencesPage" class="page">
     <section class="hero"><h1>POINTAGES DU JOUR</h1><p id="todayDateLabel"></p></section>
     <section class="section">
       <div class="info-box">
-        <strong>Horaires journaliers :</strong><br>
-        🟢 Entrée matin : <strong>08h00</strong> &nbsp;|&nbsp; 🔴 Sortie pause : <strong>12h00</strong><br>
-        🟢 Reprise : <strong>12h30</strong> &nbsp;|&nbsp; 🔴 Sortie soir : <strong>16h30</strong><br>
-        ⏱️ Durée journalière : <strong>8h00</strong>
+        <strong>Horaires :</strong>
+        🟢 Entrée matin <strong>08h00</strong> &nbsp;|&nbsp; 🔴 Sortie pause <strong>12h00</strong><br>
+        🟢 Reprise <strong>12h30</strong> &nbsp;|&nbsp; 🔴 Sortie soir <strong>16h30</strong> &nbsp;|&nbsp; ⏱ <strong>8h/jour</strong><br>
+        Max : <strong>4 entrées + 4 sorties</strong> par employé par jour
       </div>
       <div class="section-title">Détail des pointages</div>
       <div class="panel" id="presencePanel2"></div>
@@ -206,39 +258,39 @@ footer{padding:14px 20px 100px;text-align:center;font-size:11px;color:#556;}
     </section>
   </div>
 
-  <!-- CALENDRIER -->
+  <!-- ══ CALENDRIER ══ -->
   <div id="historiqueCalPage" class="page">
     <section class="hero"><h1>CALENDRIER – HISTORIQUE</h1><p>Appuyez sur un jour pour télécharger</p></section>
     <section class="section">
       <div class="section-title" id="calMonthLabel"></div>
       <div class="panel"><div class="calendar-grid" id="calGrid"></div></div>
-      <div style="display:flex;gap:10px;margin-top:10px;">
+      <div style="display:flex;gap:8px;margin-top:10px;">
         <button class="btn-dl ghost" onclick="calPrevMonth()">← Précédent</button>
         <button class="btn-dl ghost" onclick="calNextMonth()">Suivant →</button>
       </div>
     </section>
   </div>
 
-  <!-- 6 MOIS -->
+  <!-- ══ 6 MOIS ══ -->
   <div id="historiqueMoisPage" class="page">
-    <section class="hero"><h1>HISTORIQUE – 6 MOIS</h1><p>CSV avec total des heures par employé</p></section>
+    <section class="hero"><h1>HISTORIQUE – 6 MOIS</h1><p>CSV avec total heures par employé</p></section>
     <section class="section">
       <div class="section-title">Mois disponibles</div>
       <div class="month-grid" id="monthGrid"></div>
     </section>
   </div>
 
-  <!-- ABSENCES -->
+  <!-- ══ ABSENCES ══ -->
   <div id="absencesPage" class="page">
     <section class="hero"><h1>ABSENCES</h1></section>
     <section class="section">
       <div class="section-title">Absents aujourd'hui</div>
       <div class="panel" id="absencesPanel"></div>
-      <button class="btn-dl" onclick="telechargerAbsences()" style="margin-top:12px;">⬇ Télécharger absences</button>
+      <button class="btn-dl" onclick="telechargerAbsences()" style="margin-top:10px;">⬇ Télécharger absences</button>
     </section>
   </div>
 
-  <!-- SUPPRIMÉS -->
+  <!-- ══ SUPPRIMÉS ══ -->
   <div id="supprimesPage" class="page">
     <section class="hero"><h1>EMPLOYÉS SUPPRIMÉS</h1></section>
     <section class="section">
@@ -246,30 +298,19 @@ footer{padding:14px 20px 100px;text-align:center;font-size:11px;color:#556;}
     </section>
   </div>
 
-  <!-- RÉGLAGES -->
+  <!-- ══ RÉGLAGES ══ -->
   <div id="settingsPage" class="page">
     <section class="hero"><h1>RÉGLAGES</h1></section>
     <section class="section">
       <div class="section-title">Système</div>
       <div class="panel">
-        <div class="list-item">
-          <span>Changer mot de passe</span>
-          <button class="btn-dl" style="width:auto;padding:8px 12px;margin:0;" onclick="showModal('changeMainPwd')">Modifier</button>
-        </div>
-        <div class="list-item">
-          <span>Changer code admin</span>
-          <button class="btn-dl" style="width:auto;padding:8px 12px;margin:0;" onclick="showModal('changeAdminPwd')">Modifier</button>
-        </div>
-        <div class="list-item">
-          <span>Mise à jour Firebase</span>
-          <span class="badge present">Temps réel</span>
-        </div>
-        <div class="list-item">
-          <span>Statut Firebase</span>
-          <span id="settingsFirebaseStatus" class="badge absent">Vérification...</span>
-        </div>
+        <div class="list-item"><span>Changer mot de passe</span><button class="btn-dl" style="width:auto;padding:7px 11px;margin:0;" onclick="showModal('changeMainPwd')">Modifier</button></div>
+        <div class="list-item"><span>Changer code admin</span><button class="btn-dl" style="width:auto;padding:7px 11px;margin:0;" onclick="showModal('changeAdminPwd')">Modifier</button></div>
+        <div class="list-item"><span>Firebase</span><span id="settingsFirebase" class="badge absent">—</span></div>
+        <div class="list-item"><span>ESP32</span><span id="settingsEsp" class="badge absent">—</span></div>
+        <div class="list-item"><span>Personnes intérieur</span><span id="settingsInterieur" class="badge present">0</span></div>
       </div>
-      <div id="adminDownloads" style="display:none;margin-top:14px;">
+      <div id="adminDownloads" style="display:none;margin-top:12px;">
         <div class="section-title">Téléchargements Admin</div>
         <button class="btn-dl" onclick="telechargerPresences30j()">⬇ Pointages – 30 derniers jours</button>
         <button class="btn-dl" onclick="telechargerAbsencesAdmin()">⬇ Absences complètes</button>
@@ -291,159 +332,210 @@ footer{padding:14px 20px 100px;text-align:center;font-size:11px;color:#556;}
 <div id="modal"><div class="modal-box" id="modalBox"></div></div>
 <div class="toast" id="toast"></div>
 <div class="alerte-pointage" id="alertePointage"></div>
+<div class="alerte-offline" id="alerteOffline"></div>
 
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getDatabase, ref, set, get, onValue, push, update }
+import { getDatabase, ref, set, get, onValue }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
 /* ══════════════════════════════════════════════
-   🔥 CONFIGURATION FIREBASE
-   (déjà configuré avec votre projet)
+   FIREBASE
    ══════════════════════════════════════════════ */
-const firebaseConfig = {
-  databaseURL: 'https://fansen-iot-default-rtdb.firebaseio.com'
-};
-
+const firebaseConfig = { databaseURL:'https://fansen-iot-default-rtdb.firebaseio.com' };
 const app = initializeApp(firebaseConfig);
 const db  = getDatabase(app);
 
 /* ══════════════════════════════════════════════
-   HORAIRES
+   CONSTANTES
    ══════════════════════════════════════════════ */
-const HORAIRES = {
-  entree_matin:    '08:00',
-  sortie_pause:    '12:00',
-  reprise:         '12:30',
-  sortie_soir:     '16:30',  // 8h de travail
-  duree_theo_min:  480,
-  tolerance_retard: 5
-};
-const SLOTS_KEYS   = ['entree_matin','sortie_pause','reprise','sortie_soir'];
-const SLOTS_LABELS = ['Entrée matin','Sortie pause','Reprise','Sortie soir'];
-const HEURES_DEF   = {entree_matin:'08:00',sortie_pause:'12:00',reprise:'12:30',sortie_soir:'16:30'};
-const MOIS_NOMS    = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-const JOURS_NOMS   = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const DUREE_THEO_MIN = 480; // 8h = 480 min
+const RETARD_MIN     = 5;   // Tolérance retard : 5 min
+const HEURE_ENTREE   = '08:00';
+const HEURE_SORTIE   = '16:30';
+const MAX_POINTAGES  = 4;   // Max entrées ET max sorties par jour
+
+const MOIS_NOMS  = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const JOURS_NOMS = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
 
 /* ══════════════════════════════════════════════
-   ÉTAT LOCAL
+   ÉTAT
    ══════════════════════════════════════════════ */
 let employes      = ['KOFFI','MENSAH','AZIZ','YAO','KOUASSI','AMOS'];
 let supprimes     = [];
 let presencesData = {};
-let mainPassword  = 'GSP2026';
-let adminPassword = 'ADMIN2026';
+let interieurData = {};
+let mainPassword  = 'GSP2026';   // Valeur par défaut — sera remplacée par Firebase
+let adminPassword = 'ADMIN2026'; // Valeur par défaut — sera remplacée par Firebase
 let isAdmin       = false;
-let derniersSnap  = {};
+let dernierSnap   = {};
+let espEnLigne    = false;
+let dernierPointageEsp = 0; // timestamp du dernier pointage reçu
 
-/* ── Helpers ── */
+/* ══════════════════════════════════════════════
+   HELPERS CALCUL
+   ══════════════════════════════════════════════ */
 function dateKey(d){ return d.toISOString().split('T')[0]; }
 function todayKey(){ return dateKey(new Date()); }
-function heureEnMin(h){ if(!h) return null; const[hh,mm]=h.split(':').map(Number); return hh*60+mm; }
+
+function heureEnMin(h){
+  if(!h||h.length<5) return null;
+  const[hh,mm]=h.split(':').map(Number);
+  if(isNaN(hh)||isNaN(mm)) return null;
+  return hh*60+mm;
+}
+
 function minEnLabel(m){
   if(m===null||m===undefined||isNaN(m)||m<0) return '—';
   const h=Math.floor(m/60),mn=m%60;
   return h>0?(mn>0?`${h}h${String(mn).padStart(2,'0')}min`:`${h}h`):`${mn}min`;
 }
-function calculerHeures(s){
-  if(!s) return null;
-  const em=heureEnMin(s.entree_matin),sp=heureEnMin(s.sortie_pause);
-  const rp=heureEnMin(s.reprise),ss=heureEnMin(s.sortie_soir);
-  let total=0,ok=false;
-  if(em!==null&&sp!==null&&sp>em){total+=sp-em;ok=true;}
-  if(rp!==null&&ss!==null&&ss>rp){total+=ss-rp;ok=true;}
-  return ok?total:null;
+
+/* Calcule heures travaillées depuis structure ENTREE_1/SORTIE_1... */
+function calculerHeures(slots){
+  if(!slots) return {total:null, complet:false, enCours:false};
+  let total=0, paires=0, enCours=false;
+
+  for(let i=1;i<=MAX_POINTAGES;i++){
+    const e=heureEnMin(slots['ENTREE_'+i]);
+    const s=heureEnMin(slots['SORTIE_'+i]);
+    if(e!==null && s!==null && s>e){
+      total+=s-e; paires++;
+    } else if(e!==null && s===null){
+      enCours=true; // Entré mais pas encore sorti
+    }
+  }
+
+  // Plafond 8h
+  if(total>DUREE_THEO_MIN) total=DUREE_THEO_MIN;
+
+  const complet = paires>0 && !enCours;
+  return { total:paires>0?total:null, complet, enCours };
 }
-function estRetard(s){
-  if(!s||!s.entree_matin) return false;
-  return heureEnMin(s.entree_matin)>heureEnMin(HORAIRES.entree_matin)+HORAIRES.tolerance_retard;
+
+/* Vérifie retard */
+function estRetard(slots){
+  if(!slots||!slots.ENTREE_1) return false;
+  const em=heureEnMin(slots.ENTREE_1);
+  const ref=heureEnMin(HEURE_ENTREE)+RETARD_MIN;
+  return em!==null && em>ref;
+}
+
+/* Compte entrées ou sorties */
+function compterType(slots, type){
+  if(!slots) return 0;
+  let c=0;
+  for(let i=1;i<=MAX_POINTAGES;i++){
+    if(slots[type+'_'+i]) c++;
+  }
+  return c;
 }
 
 /* ══════════════════════════════════════════════
-   FIREBASE — ÉCOUTE EN TEMPS RÉEL
+   FIREBASE — ÉCOUTE TEMPS RÉEL
    ══════════════════════════════════════════════ */
-function demarrerEcouteFirebase(){
-  // Écouter les pointages en temps réel
-  const presRef = ref(db, 'presences');
-  onValue(presRef, (snapshot)=>{
-    const data = snapshot.val() || {};
+function demarrerFirebase(){
+  // Écouter presences
+  onValue(ref(db,'presences'), (snap)=>{
+    const data=snap.val()||{};
 
-    // Détecter nouveaux pointages du jour
-    const tk = todayKey();
-    const ancienJour = derniersSnap[tk] || {};
-    const nouveauJour = data[tk] || {};
+    // Détecter nouveaux pointages
+    const tk=todayKey();
+    const ancienJour=dernierSnap[tk]||{};
+    const nouveauJour=data[tk]||{};
+
     employes.forEach(nom=>{
-      const ancien  = ancienJour[nom]  || {};
-      const nouveau = nouveauJour[nom] || {};
-      SLOTS_KEYS.forEach(slot=>{
-        if(nouveau[slot] && !ancien[slot]){
-          afficherAlertePointage(nom, slot, nouveau[slot]);
-        }
-      });
+      const ancien=ancienJour[nom]||{};
+      const nouveau=nouveauJour[nom]||{};
+      for(let i=1;i<=MAX_POINTAGES;i++){
+        ['ENTREE','SORTIE'].forEach(type=>{
+          const cle=type+'_'+i;
+          if(nouveau[cle]&&!ancien[cle]){
+            afficherAlertePointage(nom, type, i, nouveau[cle]);
+            dernierPointageEsp=Date.now();
+            majStatutEsp(true);
+          }
+        });
+      }
     });
 
-    derniersSnap = JSON.parse(JSON.stringify(data));
-    presencesData = data;
+    dernierSnap=JSON.parse(JSON.stringify(data));
+    presencesData=data;
+
+    // Lire compteur intérieur
+    const ci=data[tk]?.compteur_interieur;
+    if(ci!==undefined) majCompteurInterieur(ci);
+
     majStatutFirebase(true);
     rafraichirPageActive();
-  }, (error)=>{
-    console.error('Firebase error:', error);
-    majStatutFirebase(false);
-  });
+  }, ()=>{ majStatutFirebase(false); });
 
-  // Écouter la liste des employés
-  const empRef = ref(db, 'employes');
-  onValue(empRef, (snapshot)=>{
-    const data = snapshot.val();
-    if(data && Array.isArray(data)) employes = data;
+  // Écouter employés
+  onValue(ref(db,'employes'), (snap)=>{
+    if(snap.exists()&&Array.isArray(snap.val())) employes=snap.val();
     rafraichirPageActive();
   });
 
-  // Écouter les supprimés
-  const supRef = ref(db, 'supprimes');
-  onValue(supRef, (snapshot)=>{
-    const data = snapshot.val();
-    if(data && Array.isArray(data)) supprimes = data;
+  // Écouter supprimés
+  onValue(ref(db,'supprimes'), (snap)=>{
+    if(snap.exists()&&Array.isArray(snap.val())) supprimes=snap.val();
   });
-}
 
-/* ── Sauvegarder un pointage dans Firebase ── */
-async function sauvegarderPointage(nom, slot, heure){
-  const tk = todayKey();
-  const nomSecurise = nom.replace(/[.#$[\]]/g,'_');
-  const pointRef = ref(db, `presences/${tk}/${nomSecurise}/${slot}`);
-  await set(pointRef, heure);
-}
+  // Initialiser employés si vide
+  get(ref(db,'employes')).then(snap=>{
+    if(!snap.exists()) set(ref(db,'employes'),employes);
+    else if(Array.isArray(snap.val())) employes=snap.val();
+  });
 
-/* ── Sauvegarder la liste employés ── */
-async function sauvegarderEmployes(){
-  await set(ref(db,'employes'), employes);
-}
-async function sauvegarderSupprimes(){
-  await set(ref(db,'supprimes'), supprimes);
-}
+  // Charger mots de passe depuis Firebase (persistants entre sessions)
+  get(ref(db,'config/mainPassword')).then(snap=>{
+    if(snap.exists()) mainPassword=snap.val();
+    else set(ref(db,'config/mainPassword'), mainPassword);
+  });
+  get(ref(db,'config/adminPassword')).then(snap=>{
+    if(snap.exists()) adminPassword=snap.val();
+    else set(ref(db,'config/adminPassword'), adminPassword);
+  });
+  onValue(ref(db,'config/mainPassword'), snap=>{ if(snap.exists()) mainPassword=snap.val(); });
+  onValue(ref(db,'config/adminPassword'), snap=>{ if(snap.exists()) adminPassword=snap.val(); });
 
-/* ── Initialiser les employés dans Firebase si vide ── */
-async function initialiserFirebase(){
-  const snap = await get(ref(db,'employes'));
-  if(!snap.exists()){
-    await set(ref(db,'employes'), employes);
-  } else {
-    employes = snap.val() || employes;
-  }
+  // Vérifier statut ESP32 toutes les 30 secondes
+  setInterval(()=>{
+    const inactif=Date.now()-dernierPointageEsp>300000; // 5 min sans pointage
+    // On ne marque pas hors ligne juste pour ça — on surveille via Firebase
+  },30000);
 }
 
 /* ══════════════════════════════════════════════
-   STATUT FIREBASE
+   STATUTS
    ══════════════════════════════════════════════ */
-function majStatutFirebase(enLigne){
-  const dot   = document.getElementById('serverDot');
-  const label = document.getElementById('serverLabel');
-  const badge = document.getElementById('settingsFirebaseStatus');
-  if(dot)   dot.className='dot'+(enLigne?' online':'');
-  if(label) label.textContent=enLigne?'En ligne':'Hors ligne';
-  if(badge){badge.className='badge '+(enLigne?'present':'absent');badge.textContent=enLigne?'En ligne':'Hors ligne';}
+function majStatutFirebase(ok){
+  const d=document.getElementById('dotFirebase');
+  const l=document.getElementById('lblFirebase');
+  const b=document.getElementById('settingsFirebase');
+  if(d) d.className='dot'+(ok?' online':'');
+  if(l) l.textContent=ok?'Firebase':'Firebase KO';
+  if(b){b.className='badge '+(ok?'present':'absent');b.textContent=ok?'En ligne':'Hors ligne';}
+}
+
+function majStatutEsp(ok){
+  espEnLigne=ok;
+  const d=document.getElementById('dotEsp');
+  const l=document.getElementById('lblEsp');
+  const b=document.getElementById('settingsEsp');
+  const bandeau=document.getElementById('bandeauOffline');
+  if(d) d.className='dot'+(ok?' online':' offline');
+  if(l) l.textContent=ok?'ESP32':'ESP32 KO';
+  if(b){b.className='badge '+(ok?'present':'hors-ligne');b.textContent=ok?'En ligne':'Hors ligne';}
+  if(bandeau) bandeau.className='bandeau-offline'+(ok?'':' show');
+}
+
+function majCompteurInterieur(n){
+  const el=document.getElementById('interieurCount');
+  const el2=document.getElementById('settingsInterieur');
+  if(el) el.textContent=n;
+  if(el2) el2.textContent=n+' pers.';
 }
 
 /* ══════════════════════════════════════════════
@@ -464,17 +556,18 @@ function majHorloge(){
 setInterval(majHorloge,1000);
 
 /* ══════════════════════════════════════════════
-   TOAST & ALERTES
+   ALERTES
    ══════════════════════════════════════════════ */
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
-function afficherAlertePointage(nom,slot,heure){
+
+function afficherAlertePointage(nom,type,num,heure){
   const a=document.getElementById('alertePointage');
-  const slotLabel=SLOTS_LABELS[SLOTS_KEYS.indexOf(slot)]||slot;
-  a.innerHTML=`📡 ${nom} — ${slotLabel} — ${heure}`;
+  const emoji=type==='ENTREE'?'🟢':'🔴';
+  a.innerHTML=`📡 ${emoji} ${nom} — ${type} n°${num} — ${heure}`;
   a.classList.add('show');
   setTimeout(()=>a.classList.remove('show'),5000);
 }
@@ -482,7 +575,7 @@ function afficherAlertePointage(nom,slot,heure){
 /* ══════════════════════════════════════════════
    LOGIN
    ══════════════════════════════════════════════ */
-window.login = function(){
+window.login=function(){
   const v=document.getElementById('password').value;
   if(v===mainPassword){
     document.getElementById('loginPage').style.display='none';
@@ -493,15 +586,9 @@ window.login = function(){
   }
 };
 
-/* ══════════════════════════════════════════════
-   INIT
-   ══════════════════════════════════════════════ */
-async function initAll(){
+function initAll(){
   majHorloge();
-  await initialiserFirebase();
-  demarrerEcouteFirebase();
-  renderHome();renderMembres();renderPresencesJour();
-  renderAbsences();renderSupprimes();initCalendar();initMoisGrid();
+  demarrerFirebase();
   document.getElementById('todayDateLabel').textContent=
     new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 }
@@ -510,7 +597,7 @@ async function initAll(){
    NAVIGATION
    ══════════════════════════════════════════════ */
 let currentPage='homePage';
-window.goPage = function(id){
+window.goPage=function(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   currentPage=id;
@@ -530,65 +617,137 @@ window.openMenu=function(){document.getElementById('sideMenu').classList.add('op
 window.closeMenu=function(){document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');};
 
 /* ══════════════════════════════════════════════
-   RENDERS
+   RENDER HOME
    ══════════════════════════════════════════════ */
 function renderHome(){
-  const tk=todayKey(),jour=presencesData[tk]||{};
-  let presents=0,retards=0;
-  employes.forEach(n=>{const s=jour[n];if(s&&s.entree_matin){presents++;if(estRetard(s))retards++;}});
+  const tk=todayKey(), jour=presencesData[tk]||{};
+  let presents=0,retards=0,complets=0,enCours=0;
+
+  employes.forEach(n=>{
+    const s=jour[n];
+    if(!s||!s.ENTREE_1) return;
+    presents++;
+    if(estRetard(s)) retards++;
+    const calc=calculerHeures(s);
+    if(calc.complet) complets++;
+    if(calc.enCours) enCours++;
+  });
+
   document.getElementById('presentCount').textContent=presents;
   document.getElementById('absentCount').textContent=employes.length-presents;
   document.getElementById('retardCount').textContent=retards;
+  document.getElementById('completCount').textContent=complets;
+  document.getElementById('encoursCount').textContent=enCours;
+
+  // Panel
   const panel=document.getElementById('homePresencePanel');
   const lignes=employes.map(n=>{
-    const s=jour[n];if(!s||!s.entree_matin)return'';
+    const s=jour[n];
+    if(!s||!s.ENTREE_1) return'';
     const retard=estRetard(s);
-    return`<div class="list-item"><span class="nom">${n}${retard?' ⚠️':''}</span>
-      <span class="badge ${retard?'warning':'present'}">${s.entree_matin} → ${s.sortie_soir||'en cours'}</span></div>`;
+    const calc=calculerHeures(s);
+    const derniereSortie=s.SORTIE_4||s.SORTIE_3||s.SORTIE_2||s.SORTIE_1;
+    let badge='';
+    if(calc.enCours) badge=`<span class="badge encours">En cours</span>`;
+    else if(retard)  badge=`<span class="badge warning">${s.ENTREE_1} ⚠️</span>`;
+    else             badge=`<span class="badge present">${s.ENTREE_1}→${derniereSortie||'?'}</span>`;
+    return`<div class="list-item"><span class="nom">👤 ${n}</span>${badge}</div>`;
   }).filter(Boolean);
   panel.innerHTML=lignes.length?lignes.join(''):'<p class="empty-msg">Aucun pointage aujourd\'hui.</p>';
 }
 
+/* ══════════════════════════════════════════════
+   RENDER POINTAGES DÉTAILLÉS
+   ══════════════════════════════════════════════ */
 function renderPresencesJour(){
   const tk=todayKey(),jour=presencesData[tk]||{};
   const panel=document.getElementById('presencePanel2');
+
   const html=employes.map(n=>{
     const s=jour[n]||{};
-    const slots=SLOTS_KEYS.map((k,i)=>{const v=s[k];const cls=v?(estRetard(s)&&k==='entree_matin'?'warn':'ok'):'miss';
-      return`<span class="slot ${cls}">${SLOTS_LABELS[i]}: ${v||'—'}</span>`;}).join('');
-    const total=calculerHeures(s),retard=estRetard(s);
+    const calc=calculerHeures(s);
+    const retard=estRetard(s);
+
+    // Construire les slots visuels
+    let slotsHtml='';
+    for(let i=1;i<=MAX_POINTAGES;i++){
+      const e=s['ENTREE_'+i];
+      const so=s['SORTIE_'+i];
+      if(e){
+        slotsHtml+=`<span class="slot entree">E${i}: ${e}</span>`;
+        if(so) slotsHtml+=`<span class="slot sortie">S${i}: ${so}</span>`;
+        else   slotsHtml+=`<span class="slot encours">S${i}: en cours</span>`;
+      }
+    }
+    if(!slotsHtml) slotsHtml=`<span class="slot vide">Absent</span>`;
+
+    // Barre de progression
+    let barreHtml='';
+    if(calc.total!==null){
+      const pct=Math.min(100,Math.round((calc.total/DUREE_THEO_MIN)*100));
+      const cls=pct>=100?'complet':pct>80?'':'';
+      barreHtml=`<div class="progress-bar"><div class="progress-fill ${cls}" style="width:${pct}%"></div></div>`;
+    }
+
+    // Total
+    let totalHtml='';
+    if(s.ENTREE_1){
+      if(calc.enCours) totalHtml=`<div class="pointage-total">⏱ ${calc.total!==null?minEnLabel(calc.total):'0h'} — En cours ${barreHtml}</div>`;
+      else if(calc.total!==null) totalHtml=`<div class="pointage-total">⏱ ${minEnLabel(calc.total)} / 8h ${barreHtml}</div>`;
+      else totalHtml=`<div class="pointage-total" style="color:#445;">Aucune paire complète</div>`;
+    } else {
+      totalHtml=`<div class="pointage-total" style="color:#445;">Absent aujourd'hui</div>`;
+    }
+
     return`<div class="pointage-row">
-      <div class="pointage-nom">👤 ${n}${retard?' <span style="color:var(--orange);font-size:10px;"> RETARD</span>':''}</div>
-      <div class="pointage-slots">${slots}</div>
-      ${s.entree_matin?`<div class="pointage-total">⏱ ${total!==null?minEnLabel(total):'En cours'}</div>`
-        :'<div class="pointage-total" style="color:#445;">Absent</div>'}
-    </div>`;}).join('');
+      <div class="pointage-nom">
+        <span>👤 ${n}${retard?' <span style="color:var(--orange);font-size:9px;"> RETARD</span>':''}</span>
+        ${calc.complet?'<span style="color:var(--green);font-size:10px;">✓ Complet</span>':''}
+      </div>
+      <div class="pointage-slots">${slotsHtml}</div>
+      ${totalHtml}
+    </div>`;
+  }).join('');
+
   panel.innerHTML=html||'<p class="empty-msg">Aucun pointage.</p>';
 }
 
+/* ══════════════════════════════════════════════
+   RENDER MEMBRES
+   ══════════════════════════════════════════════ */
 function renderMembres(){
   const panel=document.getElementById('membresPanel');
   if(!employes.length){panel.innerHTML='<p class="empty-msg">Aucun employé.</p>';return;}
-  panel.innerHTML=employes.map(n=>`<div class="list-item"><span class="nom">👤 ${n}</span>
-    <div style="display:flex;gap:8px;align-items:center;"><span class="badge present">Actif</span>
-    ${isAdmin?`<button onclick="supprimerEmploye('${n}')" style="background:rgba(255,59,59,0.15);border:1px solid var(--red);color:var(--red);padding:3px 8px;border-radius:14px;font-size:11px;font-weight:700;">Suppr.</button>`:''}
+  panel.innerHTML=employes.map(n=>`<div class="list-item">
+    <span class="nom">👤 ${n}</span>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <span class="badge present">Actif</span>
+      ${isAdmin?`<button onclick="supprimerEmploye('${n}')" style="background:rgba(255,59,59,0.15);border:1px solid var(--red);color:var(--red);padding:2px 7px;border-radius:12px;font-size:10px;font-weight:700;">Suppr.</button>`:''}
     </div></div>`).join('');
 }
 
+/* ══════════════════════════════════════════════
+   RENDER ABSENCES
+   ══════════════════════════════════════════════ */
 function renderAbsences(){
   const jour=presencesData[todayKey()]||{};
-  const absents=employes.filter(n=>!jour[n]||!jour[n].entree_matin);
+  const absents=employes.filter(n=>!jour[n]||!jour[n].ENTREE_1);
   const panel=document.getElementById('absencesPanel');
   if(!absents.length){panel.innerHTML='<p class="empty-msg">Tous les employés sont présents ✓</p>';return;}
   panel.innerHTML=absents.map(n=>`<div class="list-item"><span class="nom">👤 ${n}</span><span class="badge absent">Absent</span></div>`).join('');
 }
 
+/* ══════════════════════════════════════════════
+   RENDER SUPPRIMÉS
+   ══════════════════════════════════════════════ */
 function renderSupprimes(){
   const panel=document.getElementById('supprimesPanel');
   if(!supprimes.length){panel.innerHTML='<p class="empty-msg">Aucun employé supprimé.</p>';return;}
-  panel.innerHTML=supprimes.map(s=>`<div class="list-item"><span class="nom">🗑️ ${s.nom}</span>
-    <div style="display:flex;gap:8px;align-items:center;"><span class="badge supprime">Supprimé</span>
-    ${isAdmin?`<button onclick="restaurerEmploye('${s.nom}')" style="background:rgba(0,255,136,0.1);border:1px solid var(--green);color:var(--green);padding:3px 8px;border-radius:14px;font-size:11px;font-weight:700;">Restaurer</button>`:''}
+  panel.innerHTML=supprimes.map(s=>`<div class="list-item">
+    <span class="nom">🗑️ ${s.nom}</span>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <span class="badge supprime">Supprimé</span>
+      ${isAdmin?`<button onclick="restaurerEmploye('${s.nom}')" style="background:rgba(0,255,136,0.1);border:1px solid var(--green);color:var(--green);padding:2px 7px;border-radius:12px;font-size:10px;font-weight:700;">Restaurer</button>`:''}
     </div></div>`).join('');
 }
 
@@ -599,14 +758,16 @@ window.supprimerEmploye=async function(nom){
   if(!confirm(`Supprimer ${nom} ?`))return;
   employes=employes.filter(e=>e!==nom);
   supprimes.push({nom,date:new Date().toLocaleDateString('fr-FR')});
-  await sauvegarderEmployes();await sauvegarderSupprimes();
+  await set(ref(db,'employes'),employes);
+  await set(ref(db,'supprimes'),supprimes);
   renderMembres();renderSupprimes();renderHome();renderAbsences();
   showToast(`${nom} supprimé`);
 };
 window.restaurerEmploye=async function(nom){
   supprimes=supprimes.filter(s=>s.nom!==nom);
   if(!employes.includes(nom))employes.push(nom);
-  await sauvegarderEmployes();await sauvegarderSupprimes();
+  await set(ref(db,'employes'),employes);
+  await set(ref(db,'supprimes'),supprimes);
   renderMembres();renderSupprimes();renderHome();renderAbsences();
   showToast(`${nom} restauré`);
 };
@@ -625,7 +786,7 @@ function renderCalendar(){
   for(let d=1;d<=nbJ;d++){
     const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const jour=presencesData[key]||{};
-    const hasData=Object.values(jour).some(s=>s&&s.entree_matin);
+    const hasData=Object.entries(jour).some(([k,v])=>k!=='compteur_interieur'&&v&&v.ENTREE_1);
     const cls=key===ts?'today':hasData?'has-data':'';
     html+=`<div class="cal-day ${cls}" onclick="telechargerJour('${key}')">${d}</div>`;
   }
@@ -635,7 +796,7 @@ window.calPrevMonth=function(){calDate.setMonth(calDate.getMonth()-1);renderCale
 window.calNextMonth=function(){calDate.setMonth(calDate.getMonth()+1);renderCalendar();};
 
 /* ══════════════════════════════════════════════
-   6 MOIS
+   GRILLE 6 MOIS
    ══════════════════════════════════════════════ */
 function initMoisGrid(){
   const today=new Date();let html='';
@@ -645,12 +806,19 @@ function initMoisGrid(){
     const prefix=`${y}-${String(m+1).padStart(2,'0')}`;
     const jours=Object.keys(presencesData).filter(k=>k.startsWith(prefix));
     let totalMin=0;
-    jours.forEach(k=>Object.values(presencesData[k]||{}).forEach(s=>{const h=calculerHeures(s);if(h)totalMin+=h;}));
+    jours.forEach(k=>{
+      const jour=presencesData[k]||{};
+      Object.entries(jour).forEach(([nom,slots])=>{
+        if(nom==='compteur_interieur') return;
+        const c=calculerHeures(slots);
+        if(c.total) totalMin+=c.total;
+      });
+    });
     html+=`<div class="month-card" onclick="telechargerMois('${prefix}','${MOIS_NOMS[m]} ${y}')">
       <div class="mname">${MOIS_NOMS[m].substring(0,3).toUpperCase()}</div>
       <div class="minfo">${y}</div>
       <div class="minfo">${jours.length} jour(s)</div>
-      <div class="minfo" style="color:var(--cyan);margin-top:4px;">⏱ ${minEnLabel(totalMin)}</div>
+      <div class="minfo" style="color:var(--cyan);margin-top:3px;">⏱ ${minEnLabel(totalMin)}</div>
     </div>`;
   }
   document.getElementById('monthGrid').innerHTML=html;
@@ -663,137 +831,184 @@ function genCSV(lignes,nom){
   const uri='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(lignes.join('\n'));
   const a=document.createElement('a');a.href=uri;a.download=nom+'.csv';a.click();
 }
+
+function ligneEmployeJour(date,nom,slots){
+  const c=calculerHeures(slots||{});
+  const entrees=[],sorties=[];
+  for(let i=1;i<=MAX_POINTAGES;i++){
+    entrees.push((slots||{})['ENTREE_'+i]||'');
+    sorties.push((slots||{})['SORTIE_'+i]||'');
+  }
+  const statut=!(slots&&slots.ENTREE_1)?'Absent':c.enCours?'En cours':c.complet?'Complet':'Incomplet';
+  return`${date},${nom},${entrees.join(',')},${sorties.join(',')},${c.total!==null?minEnLabel(c.total):'—'},${estRetard(slots||{})?'OUI':'NON'},${statut}`;
+}
+
 window.telechargerPointagesJour=function(){
-  const jour=presencesData[todayKey()]||{};
-  const lignes=['NOM,ENTREE_MATIN,SORTIE_PAUSE,REPRISE,SORTIE_SOIR,HEURES_TRAVAILLEES,RETARD'];
-  employes.forEach(n=>{const s=jour[n]||{};const h=calculerHeures(s);
-    lignes.push(`${n},${s.entree_matin||''},${s.sortie_pause||''},${s.reprise||''},${s.sortie_soir||''},${h!==null?minEnLabel(h):'Absent'},${estRetard(s)?'OUI':'NON'}`);});
-  genCSV(lignes,`Pointages_${todayKey()}`);showToast('Téléchargement lancé');
+  const tk=todayKey(),jour=presencesData[tk]||{};
+  const lignes=['DATE,NOM,ENTREE_1,ENTREE_2,ENTREE_3,ENTREE_4,SORTIE_1,SORTIE_2,SORTIE_3,SORTIE_4,HEURES,RETARD,STATUT'];
+  employes.forEach(n=>lignes.push(ligneEmployeJour(tk,n,jour[n])));
+  genCSV(lignes,`Pointages_${tk}`);showToast('Téléchargement lancé');
 };
+
 window.telechargerJour=function(key){
   const jour=presencesData[key]||{};
-  if(!Object.values(jour).some(s=>s&&s.entree_matin)){showToast('Aucune donnée ce jour');return;}
-  const lignes=['NOM,ENTREE_MATIN,SORTIE_PAUSE,REPRISE,SORTIE_SOIR,HEURES_TRAVAILLEES,RETARD'];
-  employes.forEach(n=>{const s=jour[n]||{};const h=calculerHeures(s);
-    lignes.push(`${n},${s.entree_matin||''},${s.sortie_pause||''},${s.reprise||''},${s.sortie_soir||''},${h!==null?minEnLabel(h):'Absent'},${estRetard(s)?'OUI':'NON'}`);});
+  const aData=Object.entries(jour).some(([k,v])=>k!=='compteur_interieur'&&v&&v.ENTREE_1);
+  if(!aData){showToast('Aucune donnée ce jour');return;}
+  const lignes=['DATE,NOM,ENTREE_1,ENTREE_2,ENTREE_3,ENTREE_4,SORTIE_1,SORTIE_2,SORTIE_3,SORTIE_4,HEURES,RETARD,STATUT'];
+  employes.forEach(n=>lignes.push(ligneEmployeJour(key,n,jour[n])));
   genCSV(lignes,`Pointages_${key}`);showToast('Téléchargement lancé');
 };
+
 window.telechargerMois=function(prefix,label){
   const jours=Object.keys(presencesData).filter(k=>k.startsWith(prefix)).sort();
   if(!jours.length){showToast('Aucune donnée');return;}
-  const lignes=[`RAPPORT MENSUEL — ${label}`,'','── DÉTAIL JOURNALIER ──',
-    'DATE,NOM,ENTREE_MATIN,SORTIE_PAUSE,REPRISE,SORTIE_SOIR,HEURES_TRAVAILLEES,RETARD'];
+
+  const lignes=[
+    `RAPPORT MENSUEL — ${label}`,
+    '',
+    '── DÉTAIL JOURNALIER ──',
+    'DATE,NOM,ENTREE_1,ENTREE_2,ENTREE_3,ENTREE_4,SORTIE_1,SORTIE_2,SORTIE_3,SORTIE_4,HEURES,RETARD,STATUT'
+  ];
   const totaux={};employes.forEach(n=>totaux[n]=0);
-  jours.forEach(k=>{const jour=presencesData[k]||{};
-    employes.forEach(n=>{const s=jour[n]||{};const h=calculerHeures(s);if(h)totaux[n]+=h;
-      lignes.push(`${k},${n},${s.entree_matin||''},${s.sortie_pause||''},${s.reprise||''},${s.sortie_soir||''},${h!==null?minEnLabel(h):'Absent'},${estRetard(s)?'OUI':'NON'}`);});});
-  lignes.push('','── TOTAL HEURES PAR EMPLOYÉ ──','NOM,HEURES_TOTALES,JOURS_TRAVAILLES,HEURES_THEORIQUES,ECART');
+  const joursParEmp={};employes.forEach(n=>joursParEmp[n]=0);
+
+  jours.forEach(k=>{
+    const jour=presencesData[k]||{};
+    employes.forEach(n=>{
+      const s=jour[n];
+      const c=calculerHeures(s||{});
+      if(c.total) totaux[n]+=c.total;
+      if(s&&s.ENTREE_1) joursParEmp[n]++;
+      lignes.push(ligneEmployeJour(k,n,s));
+    });
+  });
+
+  lignes.push('','── TOTAL HEURES PAR EMPLOYÉ ──');
+  lignes.push('NOM,HEURES_TOTALES,JOURS_TRAVAILLES,HEURES_THEORIQUES,ECART');
   employes.forEach(n=>{
-    const joursT=jours.filter(k=>{const s=(presencesData[k]||{})[n];return s&&s.entree_matin;}).length;
-    const theo=HORAIRES.duree_theo_min*joursT,ecart=totaux[n]-theo;
-    lignes.push(`${n},${minEnLabel(totaux[n])},${joursT},${minEnLabel(theo)},${ecart>=0?'+'+minEnLabel(ecart):'-'+minEnLabel(Math.abs(ecart))}`);});
+    const theo=DUREE_THEO_MIN*joursParEmp[n];
+    const ecart=totaux[n]-theo;
+    const ecartStr=(ecart>=0?'+':'-')+minEnLabel(Math.abs(ecart));
+    lignes.push(`${n},${minEnLabel(totaux[n])},${joursParEmp[n]},${minEnLabel(theo)},${ecartStr}`);
+  });
   const tg=Object.values(totaux).reduce((a,b)=>a+b,0);
   lignes.push('',`TOTAL GÉNÉRAL,${minEnLabel(tg)}`);
+
   genCSV(lignes,`Rapport_${prefix}`);showToast(`Rapport ${label} téléchargé`);
 };
+
 window.telechargerAbsences=function(){
-  const jour=presencesData[todayKey()]||{};
-  const absents=employes.filter(n=>!jour[n]||!jour[n].entree_matin);
-  genCSV(['NOM,STATUT,DATE',...absents.map(n=>`${n},Absent,${todayKey()}`)],`Absences_${todayKey()}`);
+  const tk=todayKey(),jour=presencesData[tk]||{};
+  const absents=employes.filter(n=>!jour[n]||!jour[n].ENTREE_1);
+  genCSV(['NOM,STATUT,DATE',...absents.map(n=>`${n},Absent,${tk}`)],`Absences_${tk}`);
   showToast('Téléchargement lancé');
 };
+
 window.telechargerPresences30j=function(){
   const today=new Date();
-  const lignes=['DATE,NOM,ENTREE_MATIN,SORTIE_PAUSE,REPRISE,SORTIE_SOIR,HEURES_TRAVAILLEES,RETARD'];
-  for(let d=0;d<30;d++){const date=new Date(today);date.setDate(today.getDate()-d);
+  const lignes=['DATE,NOM,ENTREE_1,ENTREE_2,ENTREE_3,ENTREE_4,SORTIE_1,SORTIE_2,SORTIE_3,SORTIE_4,HEURES,RETARD,STATUT'];
+  for(let d=0;d<30;d++){
+    const date=new Date(today);date.setDate(today.getDate()-d);
     const key=dateKey(date);const jour=presencesData[key]||{};
-    employes.forEach(n=>{const s=jour[n]||{};const h=calculerHeures(s);
-      lignes.push(`${key},${n},${s.entree_matin||''},${s.sortie_pause||''},${s.reprise||''},${s.sortie_soir||''},${h!==null?minEnLabel(h):'Absent'},${estRetard(s)?'OUI':'NON'}`);});}
+    employes.forEach(n=>lignes.push(ligneEmployeJour(key,n,jour[n])));
+  }
   genCSV(lignes,'Pointages_30j');showToast('Téléchargement lancé');
 };
+
 window.telechargerAbsencesAdmin=function(){
   const today=new Date();const lignes=['DATE,NOM,STATUT'];
-  for(let d=0;d<30;d++){const date=new Date(today);date.setDate(today.getDate()-d);
+  for(let d=0;d<30;d++){
+    const date=new Date(today);date.setDate(today.getDate()-d);
     const key=dateKey(date);const jour=presencesData[key]||{};
-    employes.forEach(n=>{if(!jour[n]||!jour[n].entree_matin)lignes.push(`${key},${n},Absent`);});}
+    employes.forEach(n=>{if(!jour[n]||!jour[n].ENTREE_1)lignes.push(`${key},${n},Absent`);});
+  }
   genCSV(lignes,'Absences_30j');showToast('Téléchargement lancé');
 };
 
 /* ══════════════════════════════════════════════
-   ADMIN
+   ADMIN + MODALS
    ══════════════════════════════════════════════ */
 window.doAdminLogin=function(){if(isAdmin){goPage('settingsPage');return;}showModal('adminLogin');};
 
-/* ══════════════════════════════════════════════
-   MODALS
-   ══════════════════════════════════════════════ */
 window.showModal=function(type){
   const box=document.getElementById('modalBox');
   document.getElementById('modal').classList.add('open');
+
   if(type==='addPointage'){
     const opts=employes.map(e=>`<option value="${e}">${e}</option>`).join('');
-    const sOpts=SLOTS_KEYS.map((k,i)=>`<option value="${k}">${SLOTS_LABELS[i]}</option>`).join('');
+    const typeOpts=['ENTREE','SORTIE'].map(t=>`<option value="${t}">${t}</option>`).join('');
+    const numOpts=[1,2,3,4].map(n=>`<option value="${n}">N°${n}</option>`).join('');
     box.innerHTML=`<h3>Simuler un pointage</h3>
       <select class="modal-input" id="m_nom">${opts}</select>
-      <select class="modal-input" id="m_slot" onchange="majHeureDefaut()">${sOpts}</select>
+      <select class="modal-input" id="m_type">${typeOpts}</select>
+      <select class="modal-input" id="m_num">${numOpts}</select>
       <input class="modal-input" type="time" id="m_heure" value="08:00">
       <div class="modal-row">
         <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
         <button class="btn-dl" onclick="ajouterPointage()">Confirmer</button>
-      </div>`;majHeureDefaut();
-  }else if(type==='addMembre'){
+      </div>`;
+  }
+  else if(type==='addMembre'){
     box.innerHTML=`<h3>Ajouter un employé</h3>
       <input class="modal-input" type="text" id="m_newnom" placeholder="Nom complet" style="text-transform:uppercase;">
       <div class="modal-row">
         <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
         <button class="btn-dl" onclick="ajouterMembre()">Ajouter</button>
       </div>`;
-  }else if(type==='adminLogin'){
+  }
+  else if(type==='adminLogin'){
     box.innerHTML=`<h3>🔐 Code Administrateur</h3>
       <input class="modal-input" type="password" id="m_adminpwd" placeholder="Code admin">
-      <p id="m_adminErr" style="color:var(--red);font-size:12px;margin-bottom:10px;"></p>
+      <p id="m_adminErr" style="color:var(--red);font-size:11px;margin-bottom:8px;"></p>
       <div class="modal-row">
         <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
         <button class="btn-dl" onclick="validerAdmin()">Valider</button>
       </div>`;
-  }else if(type==='changeMainPwd'){
+  }
+  else if(type==='changeMainPwd'){
     box.innerHTML=`<h3>Changer mot de passe</h3>
       <input class="modal-input" type="password" id="m_pwd1" placeholder="Nouveau mot de passe">
       <input class="modal-input" type="password" id="m_pwd2" placeholder="Confirmer">
-      <p id="m_pwdErr" style="color:var(--red);font-size:12px;margin-bottom:10px;"></p>
+      <p id="m_pwdErr" style="color:var(--red);font-size:11px;margin-bottom:8px;"></p>
       <div class="modal-row">
         <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
         <button class="btn-dl" onclick="changerMainPwd()">Enregistrer</button>
       </div>`;
-  }else if(type==='changeAdminPwd'){
+  }
+  else if(type==='changeAdminPwd'){
     box.innerHTML=`<h3>Changer code admin</h3>
       <input class="modal-input" type="password" id="m_apwd1" placeholder="Nouveau code">
       <input class="modal-input" type="password" id="m_apwd2" placeholder="Confirmer">
-      <p id="m_apwdErr" style="color:var(--red);font-size:12px;margin-bottom:10px;"></p>
+      <p id="m_apwdErr" style="color:var(--red);font-size:11px;margin-bottom:8px;"></p>
       <div class="modal-row">
         <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
         <button class="btn-dl" onclick="changerAdminPwd()">Enregistrer</button>
       </div>`;
   }
 };
+
 window.closeModal=function(){document.getElementById('modal').classList.remove('open');};
-window.majHeureDefaut=function(){const s=document.getElementById('m_slot');const h=document.getElementById('m_heure');if(s&&h)h.value=HEURES_DEF[s.value]||'08:00';};
 
 window.ajouterPointage=async function(){
   const nom=document.getElementById('m_nom').value;
-  const slot=document.getElementById('m_slot').value;
+  const type=document.getElementById('m_type').value;
+  const num=document.getElementById('m_num').value;
   const heure=document.getElementById('m_heure').value;
-  await sauvegarderPointage(nom,slot,heure);
-  closeModal();
-  showToast(`${nom} — ${SLOTS_LABELS[SLOTS_KEYS.indexOf(slot)]} : ${heure}`);
+  const tk=todayKey();
+  const cle=type+'_'+num;
+  await set(ref(db,`presences/${tk}/${nom}/${cle}`),heure);
+  closeModal();showToast(`${nom} — ${cle} : ${heure}`);
 };
+
 window.ajouterMembre=async function(){
   const nom=document.getElementById('m_newnom').value.toUpperCase().trim();
   if(!nom){showToast('Entrez un nom');return;}
   if(employes.includes(nom)){showToast('Déjà existant');return;}
-  employes.push(nom);await sauvegarderEmployes();
+  employes.push(nom);
+  await set(ref(db,'employes'),employes);
   closeModal();showToast(`${nom} ajouté`);
 };
+
 window.validerAdmin=function(){
   const v=document.getElementById('m_adminpwd').value;
   if(v===adminPassword){
@@ -802,18 +1017,40 @@ window.validerAdmin=function(){
     renderMembres();renderSupprimes();showToast('Mode admin activé ✓');
   }else{document.getElementById('m_adminErr').textContent='Code incorrect.';}
 };
-window.changerMainPwd=function(){
-  const p1=document.getElementById('m_pwd1').value,p2=document.getElementById('m_pwd2').value;
-  if(!p1){document.getElementById('m_pwdErr').textContent='Champ vide';return;}
-  if(p1!==p2){document.getElementById('m_pwdErr').textContent='Ne correspondent pas';return;}
-  mainPassword=p1;closeModal();showToast('Mot de passe modifié ✓');
+
+
+/* Changer mot de passe connexion → sauvegardé Firebase */
+window.changerMainPwd=async function(){
+  const p1=document.getElementById('m_pwd1').value;
+  const p2=document.getElementById('m_pwd2').value;
+  const err=document.getElementById('m_pwdErr');
+  if(!p1){err.textContent='Champ vide';return;}
+  if(p1.length<4){err.textContent='Minimum 4 caractères';return;}
+  if(p1!==p2){err.textContent='Ne correspondent pas';return;}
+  try{
+    await set(ref(db,'config/mainPassword'),p1);
+    mainPassword=p1;
+    closeModal();
+    showToast('Mot de passe modifié et sauvegardé ✓');
+  }catch(e){err.textContent='Erreur: '+e.message;}
 };
-window.changerAdminPwd=function(){
-  const p1=document.getElementById('m_apwd1').value,p2=document.getElementById('m_apwd2').value;
-  if(!p1){document.getElementById('m_apwdErr').textContent='Champ vide';return;}
-  if(p1!==p2){document.getElementById('m_apwdErr').textContent='Ne correspondent pas';return;}
-  adminPassword=p1;closeModal();showToast('Code admin modifié ✓');
+
+/* Changer code admin → sauvegardé Firebase */
+window.changerAdminPwd=async function(){
+  const p1=document.getElementById('m_apwd1').value;
+  const p2=document.getElementById('m_apwd2').value;
+  const err=document.getElementById('m_apwdErr');
+  if(!p1){err.textContent='Champ vide';return;}
+  if(p1.length<4){err.textContent='Minimum 4 caractères';return;}
+  if(p1!==p2){err.textContent='Ne correspondent pas';return;}
+  try{
+    await set(ref(db,'config/adminPassword'),p1);
+    adminPassword=p1;
+    closeModal();
+    showToast('Code admin modifié et sauvegardé ✓');
+  }catch(e){err.textContent='Erreur: '+e.message;}
 };
+
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 </script>
 </body>
