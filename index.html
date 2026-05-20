@@ -1,150 +1,281 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FANSEN IoT</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{
+
+[data-theme="dark"]{
   --cyan:#00e5ff;--green:#00ff88;--orange:#ff9500;--red:#ff3b3b;--purple:#b388ff;
-  --bg:rgba(5,10,25,0.92);--panel:rgba(10,20,45,0.90);--border:rgba(0,255,255,0.18);
+  --bg:rgba(5,10,25,0.95);--panel:rgba(10,20,45,0.92);--border:rgba(0,255,255,0.18);
+  --text:#ffffff;--text2:#aaccd8;--text3:#7ab;--input-bg:rgba(0,30,60,0.7);
+  --body-overlay:rgba(0,8,20,0.82);--card-shadow:rgba(0,229,255,0.08);
+  --nav-bg:rgba(4,8,22,0.97);--header-bg:rgba(5,10,25,0.95);
+  --side-bg:rgba(4,8,22,0.99);--modal-bg:rgba(5,12,30,0.98);
 }
+[data-theme="light"]{
+  --cyan:#0097a7;--green:#00897b;--orange:#f57c00;--red:#c62828;--purple:#7b1fa2;
+  --bg:rgba(240,248,255,0.98);--panel:rgba(255,255,255,0.98);--border:rgba(0,151,167,0.3);
+  --text:#0d1b2a;--text2:#37474f;--text3:#546e7a;--input-bg:rgba(200,235,255,0.5);
+  --body-overlay:rgba(200,225,255,0.75);--card-shadow:rgba(0,151,167,0.1);
+  --nav-bg:rgba(240,248,255,0.98);--header-bg:rgba(240,248,255,0.98);
+  --side-bg:rgba(230,244,255,0.99);--modal-bg:rgba(240,248,255,0.99);
+}
+
 body{
   font-family:'Rajdhani',sans-serif;
-  background:linear-gradient(rgba(0,8,20,0.78),rgba(0,0,0,0.88)),
+  background:linear-gradient(var(--body-overlay),var(--body-overlay)),
     url('https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?q=80&w=1400&auto=format&fit=crop');
   background-size:cover;background-position:center;background-attachment:fixed;
-  color:white;min-height:100vh;overflow-x:hidden;
+  color:var(--text);min-height:100vh;overflow-x:hidden;
+  transition:all 0.3s;
 }
-/* LOGIN */
-#loginPage{display:flex;justify-content:center;align-items:center;height:100vh;padding:20px;}
-.login-box{width:100%;max-width:420px;background:rgba(5,10,25,0.92);border:1px solid var(--border);padding:40px 35px;border-radius:24px;backdrop-filter:blur(14px);box-shadow:0 0 40px rgba(0,229,255,0.12);text-align:center;}
-.login-box h1{font-family:'Orbitron',monospace;font-size:30px;color:var(--cyan);letter-spacing:3px;margin-bottom:8px;}
-.login-box .sub{font-size:13px;color:#aaccd8;margin-bottom:25px;line-height:1.6;}
-input[type=password],input[type=text],input[type=time],select{width:100%;padding:14px 16px;border:1px solid var(--border);border-radius:14px;background:rgba(0,30,60,0.6);color:white;font-size:15px;font-family:'Rajdhani',sans-serif;margin-bottom:14px;outline:none;}
-input:focus,select:focus{border-color:var(--cyan);}
-select option{background:#0a1428;}
-button{cursor:pointer;}
-.btn-primary{width:100%;padding:15px;border:none;border-radius:14px;background:linear-gradient(135deg,#00bcd4,#0097a7);color:white;font-size:16px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:1px;transition:0.3s;}
-.btn-primary:hover{background:linear-gradient(135deg,#00e5ff,#00bcd4);transform:translateY(-1px);}
-/* DASHBOARD */
+
+/* ══ LOGIN ══ */
+#loginPage{display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;}
+.login-box{width:100%;max-width:400px;background:var(--bg);border:1px solid var(--border);
+  padding:36px 28px 28px;border-radius:28px;backdrop-filter:blur(20px);
+  box-shadow:0 0 60px var(--card-shadow);text-align:center;
+  animation:fadeUp 0.6s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px);}to{opacity:1;transform:translateY(0);}}
+.login-logo{width:72px;height:72px;background:linear-gradient(135deg,var(--cyan),#0097a7);
+  border-radius:20px;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;font-size:34px;box-shadow:0 8px 32px rgba(0,229,255,0.25);}
+.login-box h1{font-family:'Orbitron',monospace;font-size:26px;color:var(--cyan);letter-spacing:3px;margin-bottom:3px;}
+.login-company{font-size:11px;color:var(--text3);margin-bottom:5px;letter-spacing:2px;text-transform:uppercase;}
+.login-sub{font-size:12px;color:var(--text2);margin-bottom:22px;line-height:1.6;}
+.login-input-wrap{position:relative;margin-bottom:14px;}
+.login-input-wrap input{width:100%;padding:14px 44px 14px 16px;border:1px solid var(--border);
+  border-radius:14px;background:var(--input-bg);color:var(--text);font-size:15px;
+  font-family:'Rajdhani',sans-serif;outline:none;transition:0.3s;}
+.login-input-wrap input:focus{border-color:var(--cyan);box-shadow:0 0 12px rgba(0,229,255,0.15);}
+.login-input-wrap .eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  cursor:pointer;font-size:18px;color:var(--text3);}
+.btn-login{width:100%;padding:15px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--cyan),#0097a7);
+  color:white;font-size:16px;font-weight:700;font-family:'Rajdhani',sans-serif;
+  letter-spacing:1px;cursor:pointer;transition:0.3s;
+  box-shadow:0 4px 20px rgba(0,229,255,0.25);}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,229,255,0.35);}
+.btn-login:active{transform:translateY(0);}
+.forgot-link{margin-top:12px;font-size:12px;color:var(--cyan);cursor:pointer;text-decoration:underline;display:block;}
+.login-footer{margin-top:20px;font-size:10px;color:var(--text3);line-height:1.8;}
+
+/* ══ DASHBOARD ══ */
 #dashboard{display:none;}
-header{background:var(--bg);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;backdrop-filter:blur(12px);z-index:100;border-bottom:1px solid var(--border);}
+.bandeau-offline{display:none;background:rgba(255,149,0,0.12);border-bottom:1px solid var(--orange);
+  padding:6px 16px;text-align:center;font-size:11px;color:var(--orange);font-weight:600;}
+.bandeau-offline.show{display:block;}
+header{background:var(--header-bg);padding:12px 16px;display:flex;justify-content:space-between;
+  align-items:center;position:sticky;top:0;backdrop-filter:blur(16px);z-index:100;
+  border-bottom:1px solid var(--border);}
 .logo{font-family:'Orbitron',monospace;font-size:13px;color:var(--cyan);letter-spacing:2px;}
-.header-right{display:flex;align-items:center;gap:10px;}
-.status-pill{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:10px;}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--red);transition:0.5s;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.status-pill{display:flex;align-items:center;gap:4px;background:rgba(0,0,0,0.2);
+  border:1px solid var(--border);border-radius:20px;padding:3px 8px;font-size:10px;color:var(--text3);}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--red);transition:0.5s;flex-shrink:0;}
 .dot.online{background:var(--green);box-shadow:0 0 6px var(--green);}
-.dot.offline{background:var(--orange);}
-.menu-btn{font-size:26px;background:none;border:none;color:white;}
-/* PAGES */
-.page{display:none;padding:0 0 100px;}
+.dot.offline-dot{background:var(--orange);}
+.theme-btn{background:none;border:1px solid var(--border);border-radius:10px;
+  color:var(--text);padding:5px 9px;font-size:14px;cursor:pointer;}
+.menu-btn{font-size:24px;background:none;border:none;color:var(--text);cursor:pointer;}
+
+/* ══ PAGES ══ */
+.page{display:none;padding:0 0 90px;}
 .page.active{display:block;}
-/* HERO */
-.hero{padding:24px 16px 6px;text-align:center;}
+.hero{padding:22px 16px 6px;text-align:center;}
 .hero h1{font-family:'Orbitron',monospace;font-size:15px;line-height:1.6;color:var(--cyan);margin-bottom:6px;letter-spacing:1px;}
-.hero p{color:#aaccd8;font-size:12px;line-height:1.7;}
-/* CARDS */
-.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:12px 14px;}
-.cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 14px 10px;}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:16px 8px;text-align:center;backdrop-filter:blur(10px);}
-.card h2{font-size:10px;color:#aaa;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;}
-.number{font-family:'Orbitron',monospace;font-size:32px;font-weight:700;color:var(--cyan);}
+.hero p{color:var(--text2);font-size:12px;line-height:1.7;}
+
+/* ══ CARDS ══ */
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px 14px;}
+.cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 8px;}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:18px;
+  padding:16px 8px;text-align:center;backdrop-filter:blur(10px);
+  box-shadow:0 4px 20px var(--card-shadow);}
+.card h2{font-size:10px;color:var(--text3);letter-spacing:1px;margin-bottom:8px;text-transform:uppercase;}
+.number{font-family:'Orbitron',monospace;font-size:30px;font-weight:700;color:var(--cyan);}
 .number.green{color:var(--green);}
 .number.orange{color:var(--orange);}
 .number.red{color:var(--red);}
 .number.purple{color:var(--purple);}
-.number.small{font-size:22px;}
+.number.sm{font-size:20px;}
 .clock-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;}
-.clock-time{font-family:'Orbitron',monospace;font-size:19px;font-weight:700;color:var(--cyan);letter-spacing:2px;}
-.clock-date{font-size:10px;color:#7ab;letter-spacing:1px;text-transform:uppercase;}
-.clock-month{font-size:11px;color:var(--green);font-weight:600;margin-top:2px;}
-/* SECTION */
-.section{padding:10px 14px;}
-.section-title{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:#7ab;margin-bottom:10px;text-transform:uppercase;}
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:14px;backdrop-filter:blur(10px);}
-/* LIST */
-.list-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;}
+.clock-time{font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--cyan);letter-spacing:2px;}
+.clock-date{font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;}
+.clock-month{font-size:11px;color:var(--green);font-weight:600;margin-top:1px;}
+
+/* ══ RÉSUMÉ JOURNALIER ══ */
+.resume-box{margin:0 14px 8px;background:var(--panel);border:1px solid var(--border);
+  border-radius:18px;padding:14px;backdrop-filter:blur(10px);}
+.resume-title{font-family:'Orbitron',monospace;font-size:10px;color:var(--text3);
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.resume-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.resume-stat{text-align:center;}
+.resume-stat .val{font-family:'Orbitron',monospace;font-size:18px;font-weight:700;}
+.resume-stat .lbl{font-size:10px;color:var(--text3);margin-top:2px;}
+.taux-bar{background:rgba(255,255,255,0.08);border-radius:20px;height:8px;
+  margin:10px 0 4px;overflow:hidden;}
+.taux-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--cyan),var(--green));
+  transition:width 1s ease;}
+.taux-label{font-size:11px;color:var(--text2);text-align:center;}
+
+/* ══ FIL D'ACTUALITÉ ══ */
+.fil-wrap{margin:0 14px 8px;background:var(--panel);border:1px solid var(--border);
+  border-radius:18px;padding:14px;backdrop-filter:blur(10px);}
+.fil-title{font-family:'Orbitron',monospace;font-size:10px;color:var(--text3);
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:center;}
+.fil-live{background:rgba(255,59,59,0.15);color:var(--red);font-size:9px;
+  padding:2px 7px;border-radius:10px;font-weight:700;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;};}
+.fil-item{display:flex;align-items:center;gap:8px;padding:7px 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px;}
+.fil-item:last-child{border:none;}
+.fil-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.fil-dot.entree{background:var(--green);}
+.fil-dot.sortie{background:var(--red);}
+.fil-dot.echec{background:var(--orange);}
+.fil-info{flex:1;}
+.fil-nom{font-weight:700;color:var(--text);}
+.fil-type{font-size:10px;color:var(--text3);}
+.fil-heure{font-family:'Orbitron',monospace;font-size:11px;color:var(--cyan);}
+.empty-fil{text-align:center;color:var(--text3);font-size:12px;padding:16px 0;}
+
+/* ══ GRAPHIQUE ══ */
+.graph-wrap{margin:0 14px 8px;background:var(--panel);border:1px solid var(--border);
+  border-radius:18px;padding:14px;backdrop-filter:blur(10px);}
+.graph-title{font-family:'Orbitron',monospace;font-size:10px;color:var(--text3);
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.chart-container{position:relative;height:180px;}
+
+/* ══ SECTION ══ */
+.section{padding:8px 14px;}
+.section-title{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;
+  color:var(--text3);margin-bottom:10px;text-transform:uppercase;}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;
+  padding:14px;backdrop-filter:blur(10px);}
+
+/* ══ LIST ══ */
+.list-item{display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;}
 .list-item:last-child{border:none;}
-.list-item .nom{font-weight:600;}
-.badge{font-weight:700;font-size:11px;padding:3px 8px;border-radius:20px;}
+.badge{font-weight:700;font-size:10px;padding:3px 8px;border-radius:20px;}
 .badge.present{background:rgba(0,255,136,0.15);color:var(--green);}
 .badge.warning{background:rgba(255,149,0,0.15);color:var(--orange);}
 .badge.absent{background:rgba(255,59,59,0.15);color:var(--red);}
 .badge.encours{background:rgba(179,136,255,0.15);color:var(--purple);}
 .badge.supprime{background:rgba(200,0,0,0.15);color:#ff6060;}
 .badge.hors-ligne{background:rgba(255,149,0,0.15);color:var(--orange);}
-/* Pointage détaillé */
+
+/* ══ POINTAGE DÉTAILLÉ ══ */
 .pointage-row{padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
 .pointage-row:last-child{border:none;}
-.pointage-nom{font-weight:700;font-size:13px;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;}
+.pointage-nom{font-weight:700;font-size:13px;margin-bottom:5px;
+  display:flex;justify-content:space-between;align-items:center;}
 .pointage-slots{display:flex;gap:4px;flex-wrap:wrap;}
 .slot{font-size:10px;padding:3px 7px;border-radius:8px;font-weight:600;}
 .slot.entree{background:rgba(0,255,136,0.15);color:var(--green);}
 .slot.sortie{background:rgba(255,59,59,0.12);color:#ff8080;}
 .slot.encours{background:rgba(179,136,255,0.15);color:var(--purple);}
-.slot.vide{background:rgba(255,255,255,0.04);color:#445;border:1px dashed rgba(255,255,255,0.1);}
+.slot.vide{background:rgba(255,255,255,0.04);color:var(--text3);border:1px dashed rgba(255,255,255,0.1);}
 .pointage-total{font-size:11px;color:var(--cyan);margin-top:5px;font-family:'Orbitron',monospace;}
-/* Barre progression heures */
-.progress-bar{background:rgba(255,255,255,0.06);border-radius:10px;height:5px;margin-top:5px;overflow:hidden;}
-.progress-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width 0.5s;}
+.progress-bar{background:rgba(255,255,255,0.06);border-radius:10px;height:4px;margin-top:5px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width 0.8s;}
 .progress-fill.complet{background:linear-gradient(90deg,var(--green),#00ff44);}
-.progress-fill.depasse{background:linear-gradient(90deg,var(--orange),var(--red));}
-/* BTN */
-.btn-dl{width:100%;padding:12px;border:none;border-radius:14px;background:linear-gradient(135deg,#00bcd4,#0097a7);color:white;font-size:13px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:1px;margin-top:10px;transition:0.3s;}
+
+/* ══ BTN ══ */
+.btn-dl{width:100%;padding:12px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--cyan),#0097a7);
+  color:white;font-size:13px;font-weight:600;font-family:'Rajdhani',sans-serif;
+  letter-spacing:1px;margin-top:8px;cursor:pointer;transition:0.3s;}
 .btn-dl:hover{filter:brightness(1.15);}
-.btn-dl.ghost{background:rgba(0,188,212,0.10);border:1px solid var(--border);}
-.btn-cancel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#aaa;}
-/* SIDE MENU */
-#sideMenu{position:fixed;top:0;right:-320px;width:290px;height:100%;background:rgba(4,8,22,0.99);padding:22px;transition:0.4s cubic-bezier(.4,0,.2,1);z-index:999;overflow-y:auto;backdrop-filter:blur(16px);border-left:1px solid var(--border);}
+.btn-dl.ghost{background:rgba(0,188,212,0.10);border:1px solid var(--border);color:var(--cyan);}
+.btn-cancel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--text3);}
+.btn-danger{background:linear-gradient(135deg,#c62828,#b71c1c);}
+
+/* ══ SIDE MENU ══ */
+#sideMenu{position:fixed;top:0;right:-310px;width:280px;height:100%;
+  background:var(--side-bg);padding:22px;
+  transition:0.4s cubic-bezier(.4,0,.2,1);z-index:999;
+  overflow-y:auto;backdrop-filter:blur(20px);border-left:1px solid var(--border);}
 #sideMenu.open{right:0;}
-.side-link{padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:14px;margin-bottom:9px;cursor:pointer;transition:0.2s;font-size:13px;}
+.side-link{padding:12px 14px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.06);border-radius:14px;
+  margin-bottom:8px;cursor:pointer;transition:0.2s;font-size:13px;color:var(--text);}
 .side-link:hover{background:rgba(0,229,255,0.08);border-color:var(--border);}
-/* MODAL */
-#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:3000;justify-content:center;align-items:center;padding:20px;}
+
+/* ══ MODAL ══ */
+#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.88);z-index:3000;
+  justify-content:center;align-items:center;padding:20px;}
 #modal.open{display:flex;}
-.modal-box{background:rgba(5,12,30,0.98);border:1px solid var(--border);border-radius:22px;padding:24px;width:100%;max-width:400px;backdrop-filter:blur(16px);max-height:90vh;overflow-y:auto;}
+.modal-box{background:var(--modal-bg);border:1px solid var(--border);
+  border-radius:22px;padding:24px;width:100%;max-width:400px;
+  backdrop-filter:blur(20px);max-height:90vh;overflow-y:auto;}
 .modal-box h3{font-family:'Orbitron',monospace;color:var(--cyan);margin-bottom:14px;font-size:13px;}
-.modal-row{display:flex;gap:10px;}
-/* CALENDAR */
+.modal-input{width:100%;padding:13px 15px;border:1px solid var(--border);border-radius:12px;
+  background:var(--input-bg);color:var(--text);font-size:14px;
+  font-family:'Rajdhani',sans-serif;margin-bottom:12px;outline:none;}
+.modal-input:focus{border-color:var(--cyan);}
+.modal-row{display:flex;gap:8px;}
+
+/* ══ CALENDAR ══ */
 .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px;}
-.cal-header{font-size:9px;color:#7ab;text-align:center;padding:3px 0;font-weight:600;}
-.cal-day{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);transition:0.2s;}
+.cal-header{font-size:9px;color:var(--text3);text-align:center;padding:3px 0;font-weight:600;}
+.cal-day{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;cursor:pointer;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);transition:0.2s;}
 .cal-day:hover:not(.empty){background:rgba(0,229,255,0.15);border-color:var(--cyan);}
 .cal-day.empty{background:none;border:none;cursor:default;}
 .cal-day.has-data{background:rgba(0,229,255,0.12);border-color:rgba(0,229,255,0.3);color:var(--cyan);}
 .cal-day.today{background:rgba(0,255,136,0.15);border-color:var(--green);color:var(--green);}
-/* MONTHS */
+
+/* ══ MONTHS ══ */
 .month-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px;}
-.month-card{background:rgba(0,229,255,0.06);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:0.2s;}
+.month-card{background:rgba(0,229,255,0.06);border:1px solid var(--border);
+  border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:0.2s;}
 .month-card:hover{background:rgba(0,229,255,0.14);transform:translateY(-2px);}
 .month-card .mname{font-family:'Orbitron',monospace;font-size:12px;color:var(--cyan);margin-bottom:3px;}
-.month-card .minfo{font-size:10px;color:#7ab;margin-top:2px;}
-/* NAV */
-.bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:rgba(4,8,22,0.97);display:flex;justify-content:space-around;padding:7px 5px 11px;border-top:1px solid var(--border);z-index:100;}
-.bottom-nav div{text-align:center;font-size:9px;color:#889;cursor:pointer;transition:0.2s;}
+.month-card .minfo{font-size:10px;color:var(--text3);margin-top:2px;}
+
+/* ══ NAV ══ */
+.bottom-nav{position:fixed;bottom:0;left:0;width:100%;
+  background:var(--nav-bg);display:flex;justify-content:space-around;
+  padding:7px 5px 11px;border-top:1px solid var(--border);z-index:100;}
+.bottom-nav div{text-align:center;font-size:9px;color:var(--text3);cursor:pointer;transition:0.2s;}
 .bottom-nav div:hover,.bottom-nav div.active-nav{color:var(--cyan);}
 .bottom-nav span{display:block;font-size:19px;margin-bottom:2px;}
+
 #overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:998;}
 #overlay.open{display:block;}
-.empty-msg{text-align:center;color:#445;padding:24px 0;font-size:12px;}
-/* TOAST */
-.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:rgba(0,229,255,0.15);border:1px solid var(--cyan);color:var(--cyan);padding:9px 18px;border-radius:28px;font-size:12px;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
+.empty-msg{text-align:center;color:var(--text3);padding:22px 0;font-size:12px;}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:rgba(0,229,255,0.15);border:1px solid var(--cyan);color:var(--cyan);
+  padding:9px 18px;border-radius:28px;font-size:12px;font-weight:600;
+  z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
-/* Alerte pointage */
-.alerte-pointage{position:fixed;top:65px;left:50%;transform:translateX(-50%);background:rgba(0,255,136,0.15);border:2px solid var(--green);color:var(--green);padding:12px 20px;border-radius:14px;font-size:13px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.4s;pointer-events:none;text-align:center;box-shadow:0 0 20px rgba(0,255,136,0.25);}
+
+/* ══ ALERTE POINTAGE ══ */
+.alerte-pointage{position:fixed;top:62px;left:50%;transform:translateX(-50%);
+  background:rgba(0,255,136,0.15);border:2px solid var(--green);color:var(--green);
+  padding:11px 20px;border-radius:14px;font-size:13px;font-weight:700;
+  z-index:9998;opacity:0;transition:opacity 0.4s;pointer-events:none;
+  text-align:center;box-shadow:0 0 20px rgba(0,255,136,0.2);}
 .alerte-pointage.show{opacity:1;}
-/* Alerte hors ligne */
-.alerte-offline{position:fixed;top:65px;left:50%;transform:translateX(-50%);background:rgba(255,149,0,0.15);border:2px solid var(--orange);color:var(--orange);padding:10px 18px;border-radius:14px;font-size:12px;font-weight:700;z-index:9997;opacity:0;transition:opacity 0.4s;pointer-events:none;text-align:center;}
-.alerte-offline.show{opacity:1;}
-.info-box{background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);border-radius:12px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:#aaccd8;line-height:1.9;}
+
+.info-box{background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.2);
+  border-radius:12px;padding:10px 12px;margin-bottom:10px;
+  font-size:11px;color:var(--text2);line-height:1.9;}
 .info-box strong{color:var(--cyan);}
-footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
-/* Bandeau hors ligne ESP32 */
-.bandeau-offline{display:none;background:rgba(255,149,0,0.12);border-bottom:1px solid var(--orange);padding:6px 16px;text-align:center;font-size:11px;color:var(--orange);font-weight:600;}
-.bandeau-offline.show{display:block;}
+footer{padding:12px 16px 90px;text-align:center;font-size:10px;color:var(--text3);}
+select option{background:#0a1428;}
 </style>
 </head>
 <body>
@@ -152,33 +283,36 @@ footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
 <!-- LOGIN -->
 <div id="loginPage">
   <div class="login-box">
+    <div class="login-logo">🏭</div>
     <h1>FANSEN IoT</h1>
-    <p class="sub">Système automatisé de gestion de la présence et du pointage des ouvriers dans une entreprise industrielle.</p>
-    <input type="password" id="password" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')login()">
-    <button class="btn-primary" onclick="login()">Connexion</button>
+    <div class="login-company">Système de Pointage Industriel</div>
+    <div class="login-sub">Plateforme automatisée de gestion de présence basée sur ESP32 &amp; IoT</div>
+    <div class="login-input-wrap">
+      <input type="password" id="password" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')login()">
+      <span class="eye" onclick="togglePwd('password',this)">👁</span>
+    </div>
+    <button class="btn-login" onclick="login()">🔐 Connexion</button>
     <p id="error" style="margin-top:10px;color:var(--red);font-size:12px;"></p>
+    <span class="forgot-link" onclick="showModal('forgotPwd')">🔑 Mot de passe oublié ?</span>
+    <div class="login-footer">
+      ESP32 • Firebase • IoT<br>
+      Projet de soutenance — Gaspar GSP
+    </div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard">
-
-  <!-- Bandeau hors ligne -->
   <div class="bandeau-offline" id="bandeauOffline">
     ⚠️ ESP32 hors ligne — Données sauvegardées sur SD — Sync automatique au retour
   </div>
 
   <header>
-    <div class="logo">FANSEN • ESP32 • IoT</div>
+    <div class="logo">FANSEN • IoT</div>
     <div class="header-right">
-      <div class="status-pill">
-        <div class="dot" id="dotFirebase"></div>
-        <span id="lblFirebase" style="color:#889;">Firebase</span>
-      </div>
-      <div class="status-pill">
-        <div class="dot" id="dotEsp"></div>
-        <span id="lblEsp" style="color:#889;">ESP32</span>
-      </div>
+      <div class="status-pill"><div class="dot" id="dotFirebase"></div><span id="lblFirebase">Firebase</span></div>
+      <div class="status-pill"><div class="dot" id="dotEsp"></div><span id="lblEsp">ESP32</span></div>
+      <button class="theme-btn" onclick="toggleTheme()" title="Mode sombre/clair" id="themeBtn">🌙</button>
       <button class="menu-btn" onclick="openMenu()">⋮</button>
     </div>
   </header>
@@ -187,15 +321,15 @@ footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
   <div id="sideMenu">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
       <h2 style="font-family:'Orbitron',monospace;color:var(--cyan);font-size:13px;">Menu</h2>
-      <button onclick="closeMenu()" style="background:none;border:none;color:white;font-size:22px;">✕</button>
+      <button onclick="closeMenu()" style="background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;">✕</button>
     </div>
     <div class="side-link" onclick="goPage('homePage');closeMenu()">🏠 Accueil</div>
     <div class="side-link" onclick="goPage('membresPage');closeMenu()">👥 Liste des membres</div>
     <div class="side-link" onclick="goPage('presencesPage');closeMenu()">📋 Pointages du jour</div>
+    <div class="side-link" onclick="goPage('graphPage');closeMenu()">📊 Graphique du jour</div>
     <div class="side-link" onclick="goPage('historiqueCalPage');closeMenu()">📅 Historique – Calendrier</div>
-    <div class="side-link" onclick="goPage('historiqueMoisPage');closeMenu()">📊 Historique – 6 mois</div>
+    <div class="side-link" onclick="goPage('historiqueMoisPage');closeMenu()">📈 Historique – 6 mois</div>
     <div class="side-link" onclick="goPage('absencesPage');closeMenu()">❌ Absences</div>
-    <div class="side-link" onclick="goPage('supprimesPage');closeMenu()">🗑️ Employés supprimés</div>
     <div class="side-link" onclick="doAdminLogin();closeMenu()">🔐 Administration</div>
   </div>
 
@@ -205,7 +339,7 @@ footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
       <h1>SYSTÈME DE PRÉSENCE ET POINTAGE</h1>
       <p>Plateforme industrielle ESP32 &amp; IoT — Temps réel</p>
     </section>
-    <!-- Ligne 1 : 4 stats -->
+
     <div class="cards">
       <div class="card"><h2>Présents</h2><div class="number green" id="presentCount">0</div></div>
       <div class="card"><h2>Absents</h2><div class="number red" id="absentCount">0</div></div>
@@ -213,23 +347,51 @@ footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
       <div class="card clock-card">
         <div class="clock-time" id="clockTime">--:--:--</div>
         <div class="clock-date" id="clockDate">---</div>
-        <div class="clock-month" id="clockMonth">---</div>
+                <div class="clock-month" id="clockMonth">---</div>
       </div>
     </div>
-    <!-- Ligne 2 : 3 stats supplémentaires -->
+
     <div class="cards-3">
-      <div class="card"><h2>Intérieur</h2><div class="number small purple" id="interieurCount">0</div></div>
-      <div class="card"><h2>Complets</h2><div class="number small green" id="completCount">0</div></div>
-      <div class="card"><h2>En cours</h2><div class="number small orange" id="encoursCount">0</div></div>
+      <div class="card"><h2>Intérieur</h2><div class="number sm purple" id="interieurCount">0</div></div>
+      <div class="card"><h2>Complets</h2><div class="number sm green" id="completCount">0</div></div>
+      <div class="card"><h2>En cours</h2><div class="number sm orange" id="encoursCount">0</div></div>
     </div>
-    <div class="section">
-      <button class="btn-dl" onclick="showModal('addPointage')">＋ Simuler un pointage</button>
+
+    <!-- Résumé journalier -->
+    <div class="resume-box">
+      <div class="resume-title">📋 Résumé journalier</div>
+      <div class="resume-stats">
+        <div class="resume-stat">
+          <div class="val green" id="resumeHeures" style="font-family:'Orbitron',monospace;">—</div>
+          <div class="lbl">Heures totales</div>
+        </div>
+        <div class="resume-stat">
+          <div class="val" id="resumeTaux" style="font-family:'Orbitron',monospace;color:var(--cyan);">—%</div>
+          <div class="lbl">Ponctualité</div>
+        </div>
+        <div class="resume-stat">
+          <div class="val orange" id="resumeAbsents" style="font-family:'Orbitron',monospace;">0</div>
+          <div class="lbl">Absents</div>
+        </div>
+      </div>
+      <div class="taux-bar"><div class="taux-fill" id="tauxBar" style="width:0%"></div></div>
+      <div class="taux-label" id="tauxLabel">Taux de présence : 0%</div>
     </div>
+
+    <!-- Fil d'actualité -->
+    <div class="fil-wrap">
+      <div class="fil-title">
+        <span>📡 Activité en direct</span>
+        <span class="fil-live">● LIVE</span>
+      </div>
+      <div id="filActualite"><p class="empty-fil">En attente de pointages...</p></div>
+    </div>
+
     <section class="section">
       <div class="section-title">Pointages du jour</div>
       <div class="panel" id="homePresencePanel"></div>
     </section>
-    <footer>Projet de soutenance — Gaspar GSP | ESP32 • IoT • Électrotechnique</footer>
+    <footer>Projet de soutenance —Olushéun Gaspar ALOUKO | ESP32 • IoT • Électrotechnique</footer>
   </div>
 
   <!-- ══ MEMBRES ══ -->
@@ -248,14 +410,26 @@ footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
     <section class="section">
       <div class="info-box">
         <strong>Horaires :</strong>
-        🟢 Entrée matin <strong>08h00</strong> &nbsp;|&nbsp; 🔴 Sortie pause <strong>12h00</strong><br>
-        🟢 Reprise <strong>12h30</strong> &nbsp;|&nbsp; 🔴 Sortie soir <strong>16h30</strong> &nbsp;|&nbsp; ⏱ <strong>8h/jour</strong><br>
-        Max : <strong>4 entrées + 4 sorties</strong> par employé par jour
+        🟢 Entrée <strong>08h00</strong> | 🔴 Pause <strong>12h00</strong> |
+        🟢 Reprise <strong>12h30</strong> | 🔴 Sortie <strong>16h30</strong> | ⏱ <strong>8h/jour</strong>
       </div>
       <div class="section-title">Détail des pointages</div>
       <div class="panel" id="presencePanel2"></div>
       <button class="btn-dl" onclick="telechargerPointagesJour()">⬇ Télécharger pointages du jour</button>
     </section>
+  </div>
+
+  <!-- ══ GRAPHIQUE ══ -->
+  <div id="graphPage" class="page">
+    <section class="hero"><h1>GRAPHIQUE DU JOUR</h1><p>Heures travaillées par employé</p></section>
+    <div class="graph-wrap" style="margin:14px;">
+      <div class="graph-title">⏱ Heures travaillées vs Objectif (8h)</div>
+      <div class="chart-container"><canvas id="chartHeures"></canvas></div>
+    </div>
+    <div class="graph-wrap" style="margin:0 14px 14px;">
+      <div class="graph-title">📊 Présences / Absences / Retards</div>
+      <div class="chart-container" style="height:160px;"><canvas id="chartPresence"></canvas></div>
+    </div>
   </div>
 
   <!-- ══ CALENDRIER ══ -->
@@ -264,7 +438,7 @@ footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
     <section class="section">
       <div class="section-title" id="calMonthLabel"></div>
       <div class="panel"><div class="calendar-grid" id="calGrid"></div></div>
-      <div style="display:flex;gap:8px;margin-top:10px;">
+      <div style="display:flex;gap:8px;margin-top:8px;">
         <button class="btn-dl ghost" onclick="calPrevMonth()">← Précédent</button>
         <button class="btn-dl ghost" onclick="calNextMonth()">Suivant →</button>
       </div>
@@ -290,14 +464,6 @@ footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
     </section>
   </div>
 
-  <!-- ══ SUPPRIMÉS ══ -->
-  <div id="supprimesPage" class="page">
-    <section class="hero"><h1>EMPLOYÉS SUPPRIMÉS</h1></section>
-    <section class="section">
-      <div class="panel" id="supprimesPanel"></div>
-    </section>
-  </div>
-
   <!-- ══ RÉGLAGES ══ -->
   <div id="settingsPage" class="page">
     <section class="hero"><h1>RÉGLAGES</h1></section>
@@ -306,15 +472,18 @@ footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
       <div class="panel">
         <div class="list-item"><span>Changer mot de passe</span><button class="btn-dl" style="width:auto;padding:7px 11px;margin:0;" onclick="showModal('changeMainPwd')">Modifier</button></div>
         <div class="list-item"><span>Changer code admin</span><button class="btn-dl" style="width:auto;padding:7px 11px;margin:0;" onclick="showModal('changeAdminPwd')">Modifier</button></div>
+        <div class="list-item"><span>Question secrète</span><button class="btn-dl" style="width:auto;padding:7px 11px;margin:0;" onclick="showModal('changeQuestion')">Modifier</button></div>
         <div class="list-item"><span>Firebase</span><span id="settingsFirebase" class="badge absent">—</span></div>
         <div class="list-item"><span>ESP32</span><span id="settingsEsp" class="badge absent">—</span></div>
         <div class="list-item"><span>Personnes intérieur</span><span id="settingsInterieur" class="badge present">0</span></div>
       </div>
       <div id="adminDownloads" style="display:none;margin-top:12px;">
-        <div class="section-title">Téléchargements Admin</div>
-        <button class="btn-dl" onclick="telechargerPresences30j()">⬇ Pointages – 30 derniers jours</button>
+        <div class="section-title">Admin — Téléchargements</div>
+        <button class="btn-dl" onclick="telechargerPresences30j()">⬇ Pointages 30 derniers jours</button>
         <button class="btn-dl" onclick="telechargerAbsencesAdmin()">⬇ Absences complètes</button>
         <button class="btn-dl" onclick="goPage('historiqueMoisPage')">⬇ Historique 6 mois</button>
+        <div class="section-title" style="margin-top:14px;">Admin — Employés supprimés</div>
+        <div class="panel" id="supprimesPanel" style="margin-top:0;"></div>
       </div>
     </section>
   </div>
@@ -323,7 +492,7 @@ footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
   <div class="bottom-nav">
     <div onclick="goPage('homePage')" class="active-nav"><span>🏠</span>Accueil</div>
     <div onclick="goPage('presencesPage')"><span>📋</span>Pointages</div>
-    <div onclick="goPage('historiqueCalPage')"><span>📅</span>Calendrier</div>
+    <div onclick="goPage('graphPage')"><span>📊</span>Graphique</div>
     <div onclick="doAdminLogin()"><span>👤</span>Admin</div>
     <div onclick="goPage('settingsPage')"><span>⚙️</span>Réglages</div>
   </div>
@@ -332,7 +501,6 @@ footer{padding:12px 16px 100px;text-align:center;font-size:10px;color:#556;}
 <div id="modal"><div class="modal-box" id="modalBox"></div></div>
 <div class="toast" id="toast"></div>
 <div class="alerte-pointage" id="alertePointage"></div>
-<div class="alerte-offline" id="alerteOffline"></div>
 
 <!-- Firebase SDK -->
 <script type="module">
@@ -340,107 +508,89 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getDatabase, ref, set, get, onValue }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
-/* ══════════════════════════════════════════════
-   FIREBASE
-   ══════════════════════════════════════════════ */
-const firebaseConfig = { databaseURL:'https://fansen-iot-default-rtdb.firebaseio.com' };
-const app = initializeApp(firebaseConfig);
+const app = initializeApp({ databaseURL:'https://fansen-iot-default-rtdb.firebaseio.com' });
 const db  = getDatabase(app);
 
-/* ══════════════════════════════════════════════
-   CONSTANTES
-   ══════════════════════════════════════════════ */
-const DUREE_THEO_MIN = 480; // 8h = 480 min
-const RETARD_MIN     = 5;   // Tolérance retard : 5 min
-const HEURE_ENTREE   = '08:00';
-const HEURE_SORTIE   = '16:30';
-const MAX_POINTAGES  = 4;   // Max entrées ET max sorties par jour
-
+/* ══ CONSTANTES ══ */
+const DUREE_THEO = 480; // 8h = 480min
+const RETARD_MIN = 5;
+const MAX_PT     = 4;
 const MOIS_NOMS  = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 const JOURS_NOMS = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
 
-/* ══════════════════════════════════════════════
-   ÉTAT
-   ══════════════════════════════════════════════ */
+/* ══ ÉTAT ══ */
 let employes      = ['KOFFI','MENSAH','AZIZ','YAO','KOUASSI','AMOS'];
 let supprimes     = [];
 let presencesData = {};
-let interieurData = {};
-let mainPassword  = 'GSP2026';   // Valeur par défaut — sera remplacée par Firebase
-let adminPassword = 'ADMIN2026'; // Valeur par défaut — sera remplacée par Firebase
+let mainPassword  = 'GSP2026';
+let adminPassword = 'ADMIN2026';
+let secretQuestion = 'Quel est le nom de votre entreprise ?';
+let secretAnswer   = 'FANSEN';
 let isAdmin       = false;
 let dernierSnap   = {};
-let espEnLigne    = false;
-let dernierPointageEsp = 0; // timestamp du dernier pointage reçu
+let filItems      = []; // Fil d'actualité
+let chartHeures   = null;
+let chartPresence = null;
+let currentTheme  = localStorage.getItem('fansen_theme') || 'dark';
 
-/* ══════════════════════════════════════════════
-   HELPERS CALCUL
-   ══════════════════════════════════════════════ */
+/* ══ THEME ══ */
+document.documentElement.setAttribute('data-theme', currentTheme);
+document.getElementById('themeBtn').textContent = currentTheme==='dark'?'☀️':'🌙';
+
+window.toggleTheme = function(){
+  currentTheme = currentTheme==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  localStorage.setItem('fansen_theme', currentTheme);
+  document.getElementById('themeBtn').textContent = currentTheme==='dark'?'☀️':'🌙';
+  if(chartHeures)  renderGraphiques();
+};
+
+/* ══ HELPERS ══ */
 function dateKey(d){ return d.toISOString().split('T')[0]; }
 function todayKey(){ return dateKey(new Date()); }
-
-function heureEnMin(h){
-  if(!h||h.length<5) return null;
-  const[hh,mm]=h.split(':').map(Number);
-  if(isNaN(hh)||isNaN(mm)) return null;
-  return hh*60+mm;
-}
-
+function heureEnMin(h){ if(!h||h.length<5)return null; const[hh,mm]=h.split(':').map(Number); return isNaN(hh)?null:hh*60+mm; }
 function minEnLabel(m){
   if(m===null||m===undefined||isNaN(m)||m<0) return '—';
   const h=Math.floor(m/60),mn=m%60;
   return h>0?(mn>0?`${h}h${String(mn).padStart(2,'0')}min`:`${h}h`):`${mn}min`;
 }
-
-/* Calcule heures travaillées depuis structure ENTREE_1/SORTIE_1... */
-function calculerHeures(slots){
-  if(!slots) return {total:null, complet:false, enCours:false};
-  let total=0, paires=0, enCours=false;
-
-  for(let i=1;i<=MAX_POINTAGES;i++){
-    const e=heureEnMin(slots['ENTREE_'+i]);
-    const s=heureEnMin(slots['SORTIE_'+i]);
-    if(e!==null && s!==null && s>e){
-      total+=s-e; paires++;
-    } else if(e!==null && s===null){
-      enCours=true; // Entré mais pas encore sorti
-    }
+function calculerHeures(s){
+  if(!s) return{total:null,complet:false,enCours:false};
+  let total=0,paires=0,enCours=false;
+  for(let i=1;i<=MAX_PT;i++){
+    const e=heureEnMin(s['ENTREE_'+i]), so=heureEnMin(s['SORTIE_'+i]);
+    if(e!==null&&so!==null&&so>e){total+=so-e;paires++;}
+    else if(e!==null&&so===null) enCours=true;
   }
-
-  // Plafond 8h
-  if(total>DUREE_THEO_MIN) total=DUREE_THEO_MIN;
-
-  const complet = paires>0 && !enCours;
-  return { total:paires>0?total:null, complet, enCours };
+  if(total>DUREE_THEO) total=DUREE_THEO;
+  return{total:paires>0?total:null,complet:paires>0&&!enCours,enCours};
+}
+function estRetard(s){
+  if(!s||!s.ENTREE_1) return false;
+  const em=heureEnMin(s.ENTREE_1);
+  return em!==null && em>heureEnMin('08:00')+RETARD_MIN;
 }
 
-/* Vérifie retard */
-function estRetard(slots){
-  if(!slots||!slots.ENTREE_1) return false;
-  const em=heureEnMin(slots.ENTREE_1);
-  const ref=heureEnMin(HEURE_ENTREE)+RETARD_MIN;
-  return em!==null && em>ref;
+/* ══ SON NOTIFICATION ══ */
+function jouerSon(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value=880;
+    osc.type='sine';
+    gain.gain.setValueAtTime(0.3,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.4);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime+0.4);
+  }catch(e){}
 }
 
-/* Compte entrées ou sorties */
-function compterType(slots, type){
-  if(!slots) return 0;
-  let c=0;
-  for(let i=1;i<=MAX_POINTAGES;i++){
-    if(slots[type+'_'+i]) c++;
-  }
-  return c;
-}
-
-/* ══════════════════════════════════════════════
-   FIREBASE — ÉCOUTE TEMPS RÉEL
-   ══════════════════════════════════════════════ */
+/* ══ FIREBASE ══ */
 function demarrerFirebase(){
-  // Écouter presences
-  onValue(ref(db,'presences'), (snap)=>{
+  onValue(ref(db,'presences'),(snap)=>{
     const data=snap.val()||{};
-
-    // Détecter nouveaux pointages
     const tk=todayKey();
     const ancienJour=dernierSnap[tk]||{};
     const nouveauJour=data[tk]||{};
@@ -448,13 +598,13 @@ function demarrerFirebase(){
     employes.forEach(nom=>{
       const ancien=ancienJour[nom]||{};
       const nouveau=nouveauJour[nom]||{};
-      for(let i=1;i<=MAX_POINTAGES;i++){
+      for(let i=1;i<=MAX_PT;i++){
         ['ENTREE','SORTIE'].forEach(type=>{
           const cle=type+'_'+i;
           if(nouveau[cle]&&!ancien[cle]){
-            afficherAlertePointage(nom, type, i, nouveau[cle]);
-            dernierPointageEsp=Date.now();
-            majStatutEsp(true);
+            afficherAlertePointage(nom,type,i,nouveau[cle]);
+            ajouterFil(nom,type,nouveau[cle]);
+            jouerSon();
           }
         });
       }
@@ -463,74 +613,68 @@ function demarrerFirebase(){
     dernierSnap=JSON.parse(JSON.stringify(data));
     presencesData=data;
 
-    // Lire compteur intérieur
     const ci=data[tk]?.compteur_interieur;
     if(ci!==undefined) majCompteurInterieur(ci);
 
     majStatutFirebase(true);
     rafraichirPageActive();
-  }, ()=>{ majStatutFirebase(false); });
+  },()=>majStatutFirebase(false));
 
-  // Écouter employés
-  onValue(ref(db,'employes'), (snap)=>{
+  onValue(ref(db,'employes'),(snap)=>{
     if(snap.exists()&&Array.isArray(snap.val())) employes=snap.val();
     rafraichirPageActive();
   });
-
-  // Écouter supprimés
-  onValue(ref(db,'supprimes'), (snap)=>{
+  onValue(ref(db,'supprimes'),(snap)=>{
     if(snap.exists()&&Array.isArray(snap.val())) supprimes=snap.val();
   });
 
-  // Initialiser employés si vide
+  // Charger config
   get(ref(db,'employes')).then(snap=>{
     if(!snap.exists()) set(ref(db,'employes'),employes);
     else if(Array.isArray(snap.val())) employes=snap.val();
   });
-
-  // Charger mots de passe depuis Firebase (persistants entre sessions)
   get(ref(db,'config/mainPassword')).then(snap=>{
     if(snap.exists()) mainPassword=snap.val();
-    else set(ref(db,'config/mainPassword'), mainPassword);
+    else set(ref(db,'config/mainPassword'),mainPassword);
   });
   get(ref(db,'config/adminPassword')).then(snap=>{
     if(snap.exists()) adminPassword=snap.val();
-    else set(ref(db,'config/adminPassword'), adminPassword);
+    else set(ref(db,'config/adminPassword'),adminPassword);
   });
-  onValue(ref(db,'config/mainPassword'), snap=>{ if(snap.exists()) mainPassword=snap.val(); });
-  onValue(ref(db,'config/adminPassword'), snap=>{ if(snap.exists()) adminPassword=snap.val(); });
-
-  // Vérifier statut ESP32 toutes les 30 secondes
-  setInterval(()=>{
-    const inactif=Date.now()-dernierPointageEsp>300000; // 5 min sans pointage
-    // On ne marque pas hors ligne juste pour ça — on surveille via Firebase
-  },30000);
+  get(ref(db,'config/secretQuestion')).then(snap=>{
+    if(snap.exists()) secretQuestion=snap.val();
+    else set(ref(db,'config/secretQuestion'),secretQuestion);
+  });
+  get(ref(db,'config/secretAnswer')).then(snap=>{
+    if(snap.exists()) secretAnswer=snap.val();
+    else set(ref(db,'config/secretAnswer'),secretAnswer);
+  });
+  onValue(ref(db,'config/mainPassword'),snap=>{if(snap.exists())mainPassword=snap.val();});
+  onValue(ref(db,'config/adminPassword'),snap=>{if(snap.exists())adminPassword=snap.val();});
+  onValue(ref(db,'config/secretQuestion'),snap=>{if(snap.exists())secretQuestion=snap.val();});
+  onValue(ref(db,'config/secretAnswer'),snap=>{if(snap.exists())secretAnswer=snap.val();});
 }
 
-/* ══════════════════════════════════════════════
-   STATUTS
-   ══════════════════════════════════════════════ */
+/* ══ STATUTS ══ */
 function majStatutFirebase(ok){
-  const d=document.getElementById('dotFirebase');
-  const l=document.getElementById('lblFirebase');
-  const b=document.getElementById('settingsFirebase');
-  if(d) d.className='dot'+(ok?' online':'');
-  if(l) l.textContent=ok?'Firebase':'Firebase KO';
-  if(b){b.className='badge '+(ok?'present':'absent');b.textContent=ok?'En ligne':'Hors ligne';}
+  ['dotFirebase','settingsFirebase'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(id==='dotFirebase') el.className='dot'+(ok?' online':'');
+    else{el.className='badge '+(ok?'present':'absent');el.textContent=ok?'En ligne':'Hors ligne';}
+  });
+  document.getElementById('lblFirebase').textContent=ok?'Firebase':'FB KO';
 }
-
 function majStatutEsp(ok){
-  espEnLigne=ok;
   const d=document.getElementById('dotEsp');
   const l=document.getElementById('lblEsp');
   const b=document.getElementById('settingsEsp');
-  const bandeau=document.getElementById('bandeauOffline');
-  if(d) d.className='dot'+(ok?' online':' offline');
-  if(l) l.textContent=ok?'ESP32':'ESP32 KO';
+  const band=document.getElementById('bandeauOffline');
+  if(d) d.className='dot'+(ok?' online':' offline-dot');
+  if(l) l.textContent=ok?'ESP32':'ESP KO';
   if(b){b.className='badge '+(ok?'present':'hors-ligne');b.textContent=ok?'En ligne':'Hors ligne';}
-  if(bandeau) bandeau.className='bandeau-offline'+(ok?'':' show');
+  if(band) band.className='bandeau-offline'+(ok?'':' show');
 }
-
 function majCompteurInterieur(n){
   const el=document.getElementById('interieurCount');
   const el2=document.getElementById('settingsInterieur');
@@ -538,9 +682,7 @@ function majCompteurInterieur(n){
   if(el2) el2.textContent=n+' pers.';
 }
 
-/* ══════════════════════════════════════════════
-   HORLOGE
-   ══════════════════════════════════════════════ */
+/* ══ HORLOGE ══ */
 function majHorloge(){
   const now=new Date();
   const h=String(now.getHours()).padStart(2,'0');
@@ -555,44 +697,68 @@ function majHorloge(){
 }
 setInterval(majHorloge,1000);
 
-/* ══════════════════════════════════════════════
-   ALERTES
-   ══════════════════════════════════════════════ */
+/* ══ FIL D'ACTUALITÉ ══ */
+function ajouterFil(nom, type, heure){
+  filItems.unshift({nom,type,heure,ts:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})});
+  if(filItems.length>10) filItems.pop();
+  renderFil();
+}
+function renderFil(){
+  const el=document.getElementById('filActualite');
+  if(!el) return;
+  if(!filItems.length){el.innerHTML='<p class="empty-fil">En attente de pointages...</p>';return;}
+  el.innerHTML=filItems.map(f=>`
+    <div class="fil-item">
+      <div class="fil-dot ${f.type.toLowerCase()}"></div>
+      <div class="fil-info">
+        <div class="fil-nom">${f.nom}</div>
+        <div class="fil-type">${f.type} — ${f.heure}</div>
+      </div>
+      <div class="fil-heure">${f.ts}</div>
+    </div>`).join('');
+}
+
+/* ══ ALERTES ══ */
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
-
 function afficherAlertePointage(nom,type,num,heure){
   const a=document.getElementById('alertePointage');
-  const emoji=type==='ENTREE'?'🟢':'🔴';
-  a.innerHTML=`📡 ${emoji} ${nom} — ${type} n°${num} — ${heure}`;
+  const e=type==='ENTREE'?'🟢':'🔴';
+  a.innerHTML=`📡 ${e} ${nom} — ${type} n°${num} — ${heure}`;
   a.classList.add('show');
   setTimeout(()=>a.classList.remove('show'),5000);
 }
 
-/* ══════════════════════════════════════════════
-   LOGIN
-   ══════════════════════════════════════════════ */
+/* ══ LOGIN ══ */
+window.togglePwd=function(id,el){
+  const inp=document.getElementById(id);
+  inp.type=inp.type==='password'?'text':'password';
+  el.textContent=inp.type==='password'?'👁':'🙈';
+};
+
 window.login=async function(){
   const v=document.getElementById('password').value;
-  // Charger le vrai mot de passe depuis Firebase avant de vérifier
+  const err=document.getElementById('error');
+  err.textContent='';
   try{
-    const snap = await get(ref(db,'config/mainPassword'));
+    const snap=await get(ref(db,'config/mainPassword'));
     if(snap.exists()) mainPassword=snap.val();
-    else await set(ref(db,'config/mainPassword'), mainPassword);
-  }catch(e){ console.log('Firebase KO, utilisation mot de passe local'); }
-
+  }catch(e){}
   if(v===mainPassword){
     document.getElementById('loginPage').style.display='none';
     document.getElementById('dashboard').style.display='block';
     initAll();
   } else {
-    document.getElementById('error').textContent='Mot de passe incorrect.';
+    err.textContent='Mot de passe incorrect.';
+    document.getElementById('password').style.borderColor='var(--red)';
+    setTimeout(()=>document.getElementById('password').style.borderColor='',1500);
   }
 };
 
+/* ══ INIT ══ */
 function initAll(){
   majHorloge();
   demarrerFirebase();
@@ -600,9 +766,7 @@ function initAll(){
     new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 }
 
-/* ══════════════════════════════════════════════
-   NAVIGATION
-   ══════════════════════════════════════════════ */
+/* ══ NAVIGATION ══ */
 let currentPage='homePage';
 window.goPage=function(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -616,35 +780,45 @@ function rafraichirPageActive(){
   if(currentPage==='presencesPage')     renderPresencesJour();
   if(currentPage==='absencesPage')      renderAbsences();
   if(currentPage==='membresPage')       renderMembres();
-  if(currentPage==='supprimesPage')     renderSupprimes();
+  if(currentPage==='graphPage')         renderGraphiques();
   if(currentPage==='historiqueCalPage') renderCalendar();
   if(currentPage==='historiqueMoisPage')initMoisGrid();
+  if(currentPage==='settingsPage'&&isAdmin) renderSupprimes();
 }
 window.openMenu=function(){document.getElementById('sideMenu').classList.add('open');document.getElementById('overlay').classList.add('open');};
 window.closeMenu=function(){document.getElementById('sideMenu').classList.remove('open');document.getElementById('overlay').classList.remove('open');};
 
-/* ══════════════════════════════════════════════
-   RENDER HOME
-   ══════════════════════════════════════════════ */
+/* ══ RENDER HOME ══ */
 function renderHome(){
-  const tk=todayKey(), jour=presencesData[tk]||{};
-  let presents=0,retards=0,complets=0,enCours=0;
+  const tk=todayKey(),jour=presencesData[tk]||{};
+  let presents=0,retards=0,complets=0,enCours=0,totalMin=0;
 
   employes.forEach(n=>{
     const s=jour[n];
     if(!s||!s.ENTREE_1) return;
     presents++;
     if(estRetard(s)) retards++;
-    const calc=calculerHeures(s);
-    if(calc.complet) complets++;
-    if(calc.enCours) enCours++;
+    const c=calculerHeures(s);
+    if(c.complet) complets++;
+    if(c.enCours) enCours++;
+    if(c.total) totalMin+=c.total;
   });
 
+  const absents=employes.length-presents;
   document.getElementById('presentCount').textContent=presents;
-  document.getElementById('absentCount').textContent=employes.length-presents;
+  document.getElementById('absentCount').textContent=absents;
   document.getElementById('retardCount').textContent=retards;
   document.getElementById('completCount').textContent=complets;
   document.getElementById('encoursCount').textContent=enCours;
+
+  // Résumé
+  document.getElementById('resumeHeures').textContent=minEnLabel(totalMin);
+  const tauxPonct=presents>0?Math.round(((presents-retards)/presents)*100):0;
+  const tauxPres=employes.length>0?Math.round((presents/employes.length)*100):0;
+  document.getElementById('resumeTaux').textContent=tauxPonct+'%';
+  document.getElementById('resumeAbsents').textContent=absents;
+  document.getElementById('tauxBar').style.width=tauxPres+'%';
+  document.getElementById('tauxLabel').textContent=`Taux de présence : ${tauxPres}% (${presents}/${employes.length})`;
 
   // Panel
   const panel=document.getElementById('homePresencePanel');
@@ -652,115 +826,150 @@ function renderHome(){
     const s=jour[n];
     if(!s||!s.ENTREE_1) return'';
     const retard=estRetard(s);
-    const calc=calculerHeures(s);
-    const derniereSortie=s.SORTIE_4||s.SORTIE_3||s.SORTIE_2||s.SORTIE_1;
+    const c=calculerHeures(s);
+    const ds=s.SORTIE_4||s.SORTIE_3||s.SORTIE_2||s.SORTIE_1;
     let badge='';
-    if(calc.enCours) badge=`<span class="badge encours">En cours</span>`;
-    else if(retard)  badge=`<span class="badge warning">${s.ENTREE_1} ⚠️</span>`;
-    else             badge=`<span class="badge present">${s.ENTREE_1}→${derniereSortie||'?'}</span>`;
-    return`<div class="list-item"><span class="nom">👤 ${n}</span>${badge}</div>`;
+    if(c.enCours) badge=`<span class="badge encours">🟣 En cours</span>`;
+    else if(retard) badge=`<span class="badge warning">⚠️ ${s.ENTREE_1}</span>`;
+    else badge=`<span class="badge present">✅ ${s.ENTREE_1}→${ds||'?'}</span>`;
+    return`<div class="list-item"><span style="font-weight:600;">👤 ${n}</span>${badge}</div>`;
   }).filter(Boolean);
   panel.innerHTML=lignes.length?lignes.join(''):'<p class="empty-msg">Aucun pointage aujourd\'hui.</p>';
 }
 
-/* ══════════════════════════════════════════════
-   RENDER POINTAGES DÉTAILLÉS
-   ══════════════════════════════════════════════ */
+/* ══ RENDER POINTAGES DÉTAILLÉS ══ */
 function renderPresencesJour(){
   const tk=todayKey(),jour=presencesData[tk]||{};
   const panel=document.getElementById('presencePanel2');
-
   const html=employes.map(n=>{
     const s=jour[n]||{};
-    const calc=calculerHeures(s);
+    const c=calculerHeures(s);
     const retard=estRetard(s);
-
-    // Construire les slots visuels
     let slotsHtml='';
-    for(let i=1;i<=MAX_POINTAGES;i++){
-      const e=s['ENTREE_'+i];
-      const so=s['SORTIE_'+i];
-      if(e){
-        slotsHtml+=`<span class="slot entree">E${i}: ${e}</span>`;
-        if(so) slotsHtml+=`<span class="slot sortie">S${i}: ${so}</span>`;
-        else   slotsHtml+=`<span class="slot encours">S${i}: en cours</span>`;
-      }
+    for(let i=1;i<=MAX_PT;i++){
+      const e=s['ENTREE_'+i],so=s['SORTIE_'+i];
+      if(e){ slotsHtml+=`<span class="slot entree">E${i}:${e}</span>`; }
+      if(so){ slotsHtml+=`<span class="slot sortie">S${i}:${so}</span>`; }
+      else if(e){ slotsHtml+=`<span class="slot encours">S${i}:?</span>`; }
     }
     if(!slotsHtml) slotsHtml=`<span class="slot vide">Absent</span>`;
-
-    // Barre de progression
-    let barreHtml='';
-    if(calc.total!==null){
-      const pct=Math.min(100,Math.round((calc.total/DUREE_THEO_MIN)*100));
-      const cls=pct>=100?'complet':pct>80?'':'';
-      barreHtml=`<div class="progress-bar"><div class="progress-fill ${cls}" style="width:${pct}%"></div></div>`;
-    }
-
-    // Total
-    let totalHtml='';
-    if(s.ENTREE_1){
-      if(calc.enCours) totalHtml=`<div class="pointage-total">⏱ ${calc.total!==null?minEnLabel(calc.total):'0h'} — En cours ${barreHtml}</div>`;
-      else if(calc.total!==null) totalHtml=`<div class="pointage-total">⏱ ${minEnLabel(calc.total)} / 8h ${barreHtml}</div>`;
-      else totalHtml=`<div class="pointage-total" style="color:#445;">Aucune paire complète</div>`;
-    } else {
-      totalHtml=`<div class="pointage-total" style="color:#445;">Absent aujourd'hui</div>`;
-    }
-
+    const pct=c.total?Math.min(100,Math.round((c.total/DUREE_THEO)*100)):0;
+    const barreHtml=c.total?`<div class="progress-bar"><div class="progress-fill ${pct>=100?'complet':''}" style="width:${pct}%"></div></div>`:'';
     return`<div class="pointage-row">
       <div class="pointage-nom">
         <span>👤 ${n}${retard?' <span style="color:var(--orange);font-size:9px;"> RETARD</span>':''}</span>
-        ${calc.complet?'<span style="color:var(--green);font-size:10px;">✓ Complet</span>':''}
+        ${c.complet?'<span style="color:var(--green);font-size:10px;">✓ 8h</span>':''}
       </div>
       <div class="pointage-slots">${slotsHtml}</div>
-      ${totalHtml}
+      ${s.ENTREE_1
+        ?`<div class="pointage-total">⏱ ${c.total?minEnLabel(c.total):'En cours'} / 8h ${barreHtml}</div>`
+        :'<div class="pointage-total" style="color:var(--text3);">Absent</div>'}
     </div>`;
   }).join('');
-
   panel.innerHTML=html||'<p class="empty-msg">Aucun pointage.</p>';
 }
 
-/* ══════════════════════════════════════════════
-   RENDER MEMBRES
-   ══════════════════════════════════════════════ */
+/* ══ GRAPHIQUES ══ */
+function renderGraphiques(){
+  const tk=todayKey(),jour=presencesData[tk]||{};
+  const isDark=currentTheme==='dark';
+  const textColor=isDark?'rgba(255,255,255,0.7)':'rgba(0,0,0,0.7)';
+  const gridColor=isDark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)';
+
+  // Graphique 1 — Heures travaillées
+  const heures=employes.map(n=>{
+    const c=calculerHeures(jour[n]||{});
+    return c.total?parseFloat((c.total/60).toFixed(2)):0;
+  });
+  const ctx1=document.getElementById('chartHeures');
+  if(ctx1){
+    if(chartHeures) chartHeures.destroy();
+    chartHeures=new Chart(ctx1,{
+      type:'bar',
+      data:{
+        labels:employes,
+        datasets:[
+          {label:'Heures travaillées',data:heures,
+            backgroundColor:employes.map(n=>{
+              const c=calculerHeures(jour[n]||{});
+              return c.enCours?'rgba(179,136,255,0.6)':c.complet?'rgba(0,255,136,0.6)':'rgba(0,229,255,0.6)';
+            }),
+            borderColor:employes.map(n=>{
+              const c=calculerHeures(jour[n]||{});
+              return c.enCours?'#b388ff':c.complet?'#00ff88':'#00e5ff';
+            }),
+            borderWidth:2,borderRadius:8},
+          {label:'Objectif (8h)',data:employes.map(()=>8),
+            type:'line',borderColor:'rgba(255,149,0,0.6)',
+            borderDash:[5,5],borderWidth:2,pointRadius:0,fill:false}
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:textColor,font:{size:10}}}},
+        scales:{
+          x:{ticks:{color:textColor,font:{size:10}},grid:{color:gridColor}},
+          y:{min:0,max:9,ticks:{color:textColor,font:{size:10},callback:v=>v+'h'},grid:{color:gridColor}}
+        }
+      }
+    });
+  }
+
+  // Graphique 2 — Présences/Absences/Retards
+  const tk2=todayKey(),jour2=presencesData[tk2]||{};
+  let pres=0,abs=0,ret=0;
+  employes.forEach(n=>{const s=jour2[n];if(!s||!s.ENTREE_1)abs++;else{pres++;if(estRetard(s))ret++;}});
+  const ctx2=document.getElementById('chartPresence');
+  if(ctx2){
+    if(chartPresence) chartPresence.destroy();
+    chartPresence=new Chart(ctx2,{
+      type:'doughnut',
+      data:{
+        labels:['Présents','Absents','Retards'],
+        datasets:[{data:[pres,abs,ret],
+          backgroundColor:['rgba(0,255,136,0.7)','rgba(255,59,59,0.7)','rgba(255,149,0,0.7)'],
+          borderColor:['#00ff88','#ff3b3b','#ff9500'],borderWidth:2}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:textColor,font:{size:11}},position:'bottom'}}}
+    });
+  }
+}
+
+/* ══ RENDER MEMBRES ══ */
 function renderMembres(){
   const panel=document.getElementById('membresPanel');
   if(!employes.length){panel.innerHTML='<p class="empty-msg">Aucun employé.</p>';return;}
   panel.innerHTML=employes.map(n=>`<div class="list-item">
-    <span class="nom">👤 ${n}</span>
+    <span style="font-weight:600;">👤 ${n}</span>
     <div style="display:flex;gap:6px;align-items:center;">
       <span class="badge present">Actif</span>
-      ${isAdmin?`<button onclick="supprimerEmploye('${n}')" style="background:rgba(255,59,59,0.15);border:1px solid var(--red);color:var(--red);padding:2px 7px;border-radius:12px;font-size:10px;font-weight:700;">Suppr.</button>`:''}
+      ${isAdmin?`<button onclick="supprimerEmploye('${n}')" style="background:rgba(255,59,59,0.15);border:1px solid var(--red);color:var(--red);padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;cursor:pointer;">Suppr.</button>`:''}
     </div></div>`).join('');
 }
 
-/* ══════════════════════════════════════════════
-   RENDER ABSENCES
-   ══════════════════════════════════════════════ */
+/* ══ RENDER ABSENCES ══ */
 function renderAbsences(){
   const jour=presencesData[todayKey()]||{};
   const absents=employes.filter(n=>!jour[n]||!jour[n].ENTREE_1);
   const panel=document.getElementById('absencesPanel');
   if(!absents.length){panel.innerHTML='<p class="empty-msg">Tous les employés sont présents ✓</p>';return;}
-  panel.innerHTML=absents.map(n=>`<div class="list-item"><span class="nom">👤 ${n}</span><span class="badge absent">Absent</span></div>`).join('');
+  panel.innerHTML=absents.map(n=>`<div class="list-item"><span style="font-weight:600;">👤 ${n}</span><span class="badge absent">Absent</span></div>`).join('');
 }
 
-/* ══════════════════════════════════════════════
-   RENDER SUPPRIMÉS
-   ══════════════════════════════════════════════ */
+/* ══ RENDER SUPPRIMÉS (admin) ══ */
 function renderSupprimes(){
   const panel=document.getElementById('supprimesPanel');
+  if(!panel) return;
   if(!supprimes.length){panel.innerHTML='<p class="empty-msg">Aucun employé supprimé.</p>';return;}
   panel.innerHTML=supprimes.map(s=>`<div class="list-item">
-    <span class="nom">🗑️ ${s.nom}</span>
+    <span style="font-weight:600;">🗑️ ${s.nom}</span>
     <div style="display:flex;gap:6px;align-items:center;">
       <span class="badge supprime">Supprimé</span>
-      ${isAdmin?`<button onclick="restaurerEmploye('${s.nom}')" style="background:rgba(0,255,136,0.1);border:1px solid var(--green);color:var(--green);padding:2px 7px;border-radius:12px;font-size:10px;font-weight:700;">Restaurer</button>`:''}
+      <button onclick="restaurerEmploye('${s.nom}')" style="background:rgba(0,255,136,0.1);border:1px solid var(--green);color:var(--green);padding:2px 8px;border-radius:12px;font-size:10px;font-weight:700;cursor:pointer;">Restaurer</button>
     </div></div>`).join('');
 }
 
-/* ══════════════════════════════════════════════
-   ACTIONS EMPLOYÉS
-   ══════════════════════════════════════════════ */
+/* ══ ACTIONS EMPLOYÉS ══ */
 window.supprimerEmploye=async function(nom){
   if(!confirm(`Supprimer ${nom} ?`))return;
   employes=employes.filter(e=>e!==nom);
@@ -779,9 +988,7 @@ window.restaurerEmploye=async function(nom){
   showToast(`${nom} restauré`);
 };
 
-/* ══════════════════════════════════════════════
-   CALENDRIER
-   ══════════════════════════════════════════════ */
+/* ══ CALENDRIER ══ */
 let calDate=new Date();
 function initCalendar(){renderCalendar();}
 function renderCalendar(){
@@ -802,9 +1009,7 @@ function renderCalendar(){
 window.calPrevMonth=function(){calDate.setMonth(calDate.getMonth()-1);renderCalendar();};
 window.calNextMonth=function(){calDate.setMonth(calDate.getMonth()+1);renderCalendar();};
 
-/* ══════════════════════════════════════════════
-   GRILLE 6 MOIS
-   ══════════════════════════════════════════════ */
+/* ══ 6 MOIS ══ */
 function initMoisGrid(){
   const today=new Date();let html='';
   for(let i=5;i>=0;i--){
@@ -814,11 +1019,10 @@ function initMoisGrid(){
     const jours=Object.keys(presencesData).filter(k=>k.startsWith(prefix));
     let totalMin=0;
     jours.forEach(k=>{
-      const jour=presencesData[k]||{};
-      Object.entries(jour).forEach(([nom,slots])=>{
-        if(nom==='compteur_interieur') return;
+      Object.entries(presencesData[k]||{}).forEach(([nom,slots])=>{
+        if(nom==='compteur_interieur')return;
         const c=calculerHeures(slots);
-        if(c.total) totalMin+=c.total;
+        if(c.total)totalMin+=c.total;
       });
     });
     html+=`<div class="month-card" onclick="telechargerMois('${prefix}','${MOIS_NOMS[m]} ${y}')">
@@ -831,131 +1035,82 @@ function initMoisGrid(){
   document.getElementById('monthGrid').innerHTML=html;
 }
 
-/* ══════════════════════════════════════════════
-   CSV
-   ══════════════════════════════════════════════ */
+/* ══ CSV ══ */
 function genCSV(lignes,nom){
   const uri='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(lignes.join('\n'));
   const a=document.createElement('a');a.href=uri;a.download=nom+'.csv';a.click();
 }
-
-function ligneEmployeJour(date,nom,slots){
+function ligneEmploye(date,nom,slots){
   const c=calculerHeures(slots||{});
-  const entrees=[],sorties=[];
-  for(let i=1;i<=MAX_POINTAGES;i++){
-    entrees.push((slots||{})['ENTREE_'+i]||'');
-    sorties.push((slots||{})['SORTIE_'+i]||'');
-  }
-  const statut=!(slots&&slots.ENTREE_1)?'Absent':c.enCours?'En cours':c.complet?'Complet':'Incomplet';
-  return`${date},${nom},${entrees.join(',')},${sorties.join(',')},${c.total!==null?minEnLabel(c.total):'—'},${estRetard(slots||{})?'OUI':'NON'},${statut}`;
+  const e=[],s=[];
+  for(let i=1;i<=MAX_PT;i++){e.push((slots||{})['ENTREE_'+i]||'');s.push((slots||{})['SORTIE_'+i]||'');}
+  const st=!(slots&&slots.ENTREE_1)?'Absent':c.enCours?'En cours':c.complet?'Complet':'Incomplet';
+  return`${date},${nom},${e.join(',')},${s.join(',')},${c.total?minEnLabel(c.total):'—'},${estRetard(slots||{})?'OUI':'NON'},${st}`;
 }
-
 window.telechargerPointagesJour=function(){
   const tk=todayKey(),jour=presencesData[tk]||{};
-  const lignes=['DATE,NOM,ENTREE_1,ENTREE_2,ENTREE_3,ENTREE_4,SORTIE_1,SORTIE_2,SORTIE_3,SORTIE_4,HEURES,RETARD,STATUT'];
-  employes.forEach(n=>lignes.push(ligneEmployeJour(tk,n,jour[n])));
-  genCSV(lignes,`Pointages_${tk}`);showToast('Téléchargement lancé');
+  const l=['DATE,NOM,E1,E2,E3,E4,S1,S2,S3,S4,HEURES,RETARD,STATUT'];
+  employes.forEach(n=>l.push(ligneEmploye(tk,n,jour[n])));
+  genCSV(l,`Pointages_${tk}`);showToast('Téléchargement lancé');
 };
-
 window.telechargerJour=function(key){
   const jour=presencesData[key]||{};
-  const aData=Object.entries(jour).some(([k,v])=>k!=='compteur_interieur'&&v&&v.ENTREE_1);
-  if(!aData){showToast('Aucune donnée ce jour');return;}
-  const lignes=['DATE,NOM,ENTREE_1,ENTREE_2,ENTREE_3,ENTREE_4,SORTIE_1,SORTIE_2,SORTIE_3,SORTIE_4,HEURES,RETARD,STATUT'];
-  employes.forEach(n=>lignes.push(ligneEmployeJour(key,n,jour[n])));
-  genCSV(lignes,`Pointages_${key}`);showToast('Téléchargement lancé');
+  if(!Object.entries(jour).some(([k,v])=>k!=='compteur_interieur'&&v&&v.ENTREE_1)){showToast('Aucune donnée');return;}
+  const l=['DATE,NOM,E1,E2,E3,E4,S1,S2,S3,S4,HEURES,RETARD,STATUT'];
+  employes.forEach(n=>l.push(ligneEmploye(key,n,jour[n])));
+  genCSV(l,`Pointages_${key}`);showToast('Téléchargement lancé');
 };
-
 window.telechargerMois=function(prefix,label){
   const jours=Object.keys(presencesData).filter(k=>k.startsWith(prefix)).sort();
   if(!jours.length){showToast('Aucune donnée');return;}
-
-  const lignes=[
-    `RAPPORT MENSUEL — ${label}`,
-    '',
-    '── DÉTAIL JOURNALIER ──',
-    'DATE,NOM,ENTREE_1,ENTREE_2,ENTREE_3,ENTREE_4,SORTIE_1,SORTIE_2,SORTIE_3,SORTIE_4,HEURES,RETARD,STATUT'
-  ];
-  const totaux={};employes.forEach(n=>totaux[n]=0);
-  const joursParEmp={};employes.forEach(n=>joursParEmp[n]=0);
-
+  const l=[`RAPPORT MENSUEL — ${label}`,'','── DÉTAIL ──','DATE,NOM,E1,E2,E3,E4,S1,S2,S3,S4,HEURES,RETARD,STATUT'];
+  const totaux={},jt={};employes.forEach(n=>{totaux[n]=0;jt[n]=0;});
   jours.forEach(k=>{
     const jour=presencesData[k]||{};
     employes.forEach(n=>{
-      const s=jour[n];
-      const c=calculerHeures(s||{});
-      if(c.total) totaux[n]+=c.total;
-      if(s&&s.ENTREE_1) joursParEmp[n]++;
-      lignes.push(ligneEmployeJour(k,n,s));
+      const c=calculerHeures(jour[n]||{});
+      if(c.total)totaux[n]+=c.total;
+      if(jour[n]&&jour[n].ENTREE_1)jt[n]++;
+      l.push(ligneEmploye(k,n,jour[n]));
     });
   });
-
-  lignes.push('','── TOTAL HEURES PAR EMPLOYÉ ──');
-  lignes.push('NOM,HEURES_TOTALES,JOURS_TRAVAILLES,HEURES_THEORIQUES,ECART');
+  l.push('','── TOTAL PAR EMPLOYÉ ──','NOM,HEURES_TOTALES,JOURS,THEORIQUE,ECART');
   employes.forEach(n=>{
-    const theo=DUREE_THEO_MIN*joursParEmp[n];
-    const ecart=totaux[n]-theo;
-    const ecartStr=(ecart>=0?'+':'-')+minEnLabel(Math.abs(ecart));
-    lignes.push(`${n},${minEnLabel(totaux[n])},${joursParEmp[n]},${minEnLabel(theo)},${ecartStr}`);
+    const theo=DUREE_THEO*jt[n],ec=totaux[n]-theo;
+    l.push(`${n},${minEnLabel(totaux[n])},${jt[n]},${minEnLabel(theo)},${ec>=0?'+'+minEnLabel(ec):'-'+minEnLabel(Math.abs(ec))}`);
   });
-  const tg=Object.values(totaux).reduce((a,b)=>a+b,0);
-  lignes.push('',`TOTAL GÉNÉRAL,${minEnLabel(tg)}`);
-
-  genCSV(lignes,`Rapport_${prefix}`);showToast(`Rapport ${label} téléchargé`);
+  l.push('',`TOTAL GÉNÉRAL,${minEnLabel(Object.values(totaux).reduce((a,b)=>a+b,0))}`);
+  genCSV(l,`Rapport_${prefix}`);showToast(`Rapport ${label} téléchargé`);
 };
-
 window.telechargerAbsences=function(){
   const tk=todayKey(),jour=presencesData[tk]||{};
-  const absents=employes.filter(n=>!jour[n]||!jour[n].ENTREE_1);
-  genCSV(['NOM,STATUT,DATE',...absents.map(n=>`${n},Absent,${tk}`)],`Absences_${tk}`);
+  genCSV(['NOM,STATUT,DATE',...employes.filter(n=>!jour[n]||!jour[n].ENTREE_1).map(n=>`${n},Absent,${tk}`)],`Absences_${tk}`);
   showToast('Téléchargement lancé');
 };
-
 window.telechargerPresences30j=function(){
+  const l=['DATE,NOM,E1,E2,E3,E4,S1,S2,S3,S4,HEURES,RETARD,STATUT'];
   const today=new Date();
-  const lignes=['DATE,NOM,ENTREE_1,ENTREE_2,ENTREE_3,ENTREE_4,SORTIE_1,SORTIE_2,SORTIE_3,SORTIE_4,HEURES,RETARD,STATUT'];
-  for(let d=0;d<30;d++){
-    const date=new Date(today);date.setDate(today.getDate()-d);
+  for(let d=0;d<30;d++){const date=new Date(today);date.setDate(today.getDate()-d);
     const key=dateKey(date);const jour=presencesData[key]||{};
-    employes.forEach(n=>lignes.push(ligneEmployeJour(key,n,jour[n])));
-  }
-  genCSV(lignes,'Pointages_30j');showToast('Téléchargement lancé');
+    employes.forEach(n=>l.push(ligneEmploye(key,n,jour[n])));}
+  genCSV(l,'Pointages_30j');showToast('Téléchargement lancé');
 };
-
 window.telechargerAbsencesAdmin=function(){
-  const today=new Date();const lignes=['DATE,NOM,STATUT'];
-  for(let d=0;d<30;d++){
-    const date=new Date(today);date.setDate(today.getDate()-d);
+  const l=['DATE,NOM,STATUT'];const today=new Date();
+  for(let d=0;d<30;d++){const date=new Date(today);date.setDate(today.getDate()-d);
     const key=dateKey(date);const jour=presencesData[key]||{};
-    employes.forEach(n=>{if(!jour[n]||!jour[n].ENTREE_1)lignes.push(`${key},${n},Absent`);});
-  }
-  genCSV(lignes,'Absences_30j');showToast('Téléchargement lancé');
+    employes.forEach(n=>{if(!jour[n]||!jour[n].ENTREE_1)l.push(`${key},${n},Absent`);});}
+  genCSV(l,'Absences_30j');showToast('Téléchargement lancé');
 };
-
-/* ══════════════════════════════════════════════
-   ADMIN + MODALS
-   ══════════════════════════════════════════════ */
+  /* ══ ADMIN ══ */
 window.doAdminLogin=function(){if(isAdmin){goPage('settingsPage');return;}showModal('adminLogin');};
 
+/* ══ MODALS ══ */
 window.showModal=function(type){
   const box=document.getElementById('modalBox');
   document.getElementById('modal').classList.add('open');
 
-  if(type==='addPointage'){
-    const opts=employes.map(e=>`<option value="${e}">${e}</option>`).join('');
-    const typeOpts=['ENTREE','SORTIE'].map(t=>`<option value="${t}">${t}</option>`).join('');
-    const numOpts=[1,2,3,4].map(n=>`<option value="${n}">N°${n}</option>`).join('');
-    box.innerHTML=`<h3>Simuler un pointage</h3>
-      <select class="modal-input" id="m_nom">${opts}</select>
-      <select class="modal-input" id="m_type">${typeOpts}</select>
-      <select class="modal-input" id="m_num">${numOpts}</select>
-      <input class="modal-input" type="time" id="m_heure" value="08:00">
-      <div class="modal-row">
-        <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
-        <button class="btn-dl" onclick="ajouterPointage()">Confirmer</button>
-      </div>`;
-  }
-  else if(type==='addMembre'){
+  if(type==='addMembre'){
     box.innerHTML=`<h3>Ajouter un employé</h3>
       <input class="modal-input" type="text" id="m_newnom" placeholder="Nom complet" style="text-transform:uppercase;">
       <div class="modal-row">
@@ -965,7 +1120,10 @@ window.showModal=function(type){
   }
   else if(type==='adminLogin'){
     box.innerHTML=`<h3>🔐 Code Administrateur</h3>
-      <input class="modal-input" type="password" id="m_adminpwd" placeholder="Code admin">
+      <div style="position:relative;margin-bottom:12px;">
+        <input class="modal-input" type="password" id="m_adminpwd" placeholder="Code admin" style="margin:0;padding-right:44px;">
+        <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:16px;" onclick="togglePwd('m_adminpwd',this)">👁</span>
+      </div>
       <p id="m_adminErr" style="color:var(--red);font-size:11px;margin-bottom:8px;"></p>
       <div class="modal-row">
         <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
@@ -974,7 +1132,7 @@ window.showModal=function(type){
   }
   else if(type==='changeMainPwd'){
     box.innerHTML=`<h3>Changer mot de passe</h3>
-      <input class="modal-input" type="password" id="m_pwd1" placeholder="Nouveau mot de passe">
+      <input class="modal-input" type="password" id="m_pwd1" placeholder="Nouveau mot de passe (min 4 car.)">
       <input class="modal-input" type="password" id="m_pwd2" placeholder="Confirmer">
       <p id="m_pwdErr" style="color:var(--red);font-size:11px;margin-bottom:8px;"></p>
       <div class="modal-row">
@@ -984,7 +1142,7 @@ window.showModal=function(type){
   }
   else if(type==='changeAdminPwd'){
     box.innerHTML=`<h3>Changer code admin</h3>
-      <input class="modal-input" type="password" id="m_apwd1" placeholder="Nouveau code">
+      <input class="modal-input" type="password" id="m_apwd1" placeholder="Nouveau code (min 4 car.)">
       <input class="modal-input" type="password" id="m_apwd2" placeholder="Confirmer">
       <p id="m_apwdErr" style="color:var(--red);font-size:11px;margin-bottom:8px;"></p>
       <div class="modal-row">
@@ -992,37 +1150,54 @@ window.showModal=function(type){
         <button class="btn-dl" onclick="changerAdminPwd()">Enregistrer</button>
       </div>`;
   }
+  else if(type==='changeQuestion'){
+    box.innerHTML=`<h3>Question secrète</h3>
+      <p style="font-size:11px;color:var(--text2);margin-bottom:10px;">Actuelle : <em>${secretQuestion}</em></p>
+      <input class="modal-input" type="text" id="m_q" placeholder="Nouvelle question" value="${secretQuestion}">
+      <input class="modal-input" type="text" id="m_a" placeholder="Réponse secrète">
+      <p id="m_qErr" style="color:var(--red);font-size:11px;margin-bottom:8px;"></p>
+      <div class="modal-row">
+        <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-dl" onclick="changerQuestion()">Enregistrer</button>
+      </div>`;
+  }
+  else if(type==='forgotPwd'){
+    box.innerHTML=`<h3>🔑 Récupération</h3>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:14px;">Répondez à votre question secrète :</p>
+      <p style="font-size:13px;color:var(--cyan);font-weight:600;margin-bottom:12px;">${secretQuestion}</p>
+      <input class="modal-input" type="text" id="m_rep" placeholder="Votre réponse">
+      <p id="m_repErr" style="color:var(--red);font-size:11px;margin-bottom:8px;"></p>
+      <div class="modal-row">
+        <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-dl" onclick="verifierReponse()">Valider</button>
+      </div>`;
+  }
+  else if(type==='nouveauPwd'){
+    box.innerHTML=`<h3>✅ Nouveau mot de passe</h3>
+      <input class="modal-input" type="password" id="m_npwd1" placeholder="Nouveau mot de passe">
+      <input class="modal-input" type="password" id="m_npwd2" placeholder="Confirmer">
+      <p id="m_npwdErr" style="color:var(--red);font-size:11px;margin-bottom:8px;"></p>
+      <div class="modal-row">
+        <button class="btn-dl btn-cancel" onclick="closeModal()">Annuler</button>
+        <button class="btn-dl" onclick="definirNouveauPwd()">Enregistrer</button>
+      </div>`;
+  }
 };
 
 window.closeModal=function(){document.getElementById('modal').classList.remove('open');};
 
-window.ajouterPointage=async function(){
-  const nom=document.getElementById('m_nom').value;
-  const type=document.getElementById('m_type').value;
-  const num=document.getElementById('m_num').value;
-  const heure=document.getElementById('m_heure').value;
-  const tk=todayKey();
-  const cle=type+'_'+num;
-  await set(ref(db,`presences/${tk}/${nom}/${cle}`),heure);
-  closeModal();showToast(`${nom} — ${cle} : ${heure}`);
-};
-
+/* ══ ACTIONS MODALS ══ */
 window.ajouterMembre=async function(){
   const nom=document.getElementById('m_newnom').value.toUpperCase().trim();
   if(!nom){showToast('Entrez un nom');return;}
   if(employes.includes(nom)){showToast('Déjà existant');return;}
-  employes.push(nom);
-  await set(ref(db,'employes'),employes);
+  employes.push(nom);await set(ref(db,'employes'),employes);
   closeModal();showToast(`${nom} ajouté`);
 };
 
 window.validerAdmin=async function(){
   const v=document.getElementById('m_adminpwd').value;
-  // Charger le vrai code admin depuis Firebase avant de vérifier
-  try{
-    const snap=await get(ref(db,'config/adminPassword'));
-    if(snap.exists()) adminPassword=snap.val();
-  }catch(e){}
+  try{const snap=await get(ref(db,'config/adminPassword'));if(snap.exists())adminPassword=snap.val();}catch(e){}
   if(v===adminPassword){
     isAdmin=true;closeModal();goPage('settingsPage');
     document.getElementById('adminDownloads').style.display='block';
@@ -1030,37 +1205,61 @@ window.validerAdmin=async function(){
   }else{document.getElementById('m_adminErr').textContent='Code incorrect.';}
 };
 
-
-/* Changer mot de passe connexion → sauvegardé Firebase */
 window.changerMainPwd=async function(){
-  const p1=document.getElementById('m_pwd1').value;
-  const p2=document.getElementById('m_pwd2').value;
+  const p1=document.getElementById('m_pwd1').value,p2=document.getElementById('m_pwd2').value;
   const err=document.getElementById('m_pwdErr');
+  if(!p1){err.textContent='Champ vide';return;}
+  if(p1.length<4){err.textContent='Minimum 4 caractères';return;}
+  if(p1!==p2){err.textContent='Ne correspondent pas';return;}
+  try{await set(ref(db,'config/mainPassword'),p1);mainPassword=p1;closeModal();showToast('Mot de passe modifié ✓');}
+  catch(e){err.textContent='Erreur Firebase';}
+};
+
+window.changerAdminPwd=async function(){
+  const p1=document.getElementById('m_apwd1').value,p2=document.getElementById('m_apwd2').value;
+  const err=document.getElementById('m_apwdErr');
+  if(!p1){err.textContent='Champ vide';return;}
+  if(p1.length<4){err.textContent='Minimum 4 caractères';return;}
+  if(p1!==p2){err.textContent='Ne correspondent pas';return;}
+  try{await set(ref(db,'config/adminPassword'),p1);adminPassword=p1;closeModal();showToast('Code admin modifié ✓');}
+  catch(e){err.textContent='Erreur Firebase';}
+};
+
+window.changerQuestion=async function(){
+  const q=document.getElementById('m_q').value.trim();
+  const a=document.getElementById('m_a').value.trim().toUpperCase();
+  const err=document.getElementById('m_qErr');
+  if(!q||!a){err.textContent='Remplissez les deux champs';return;}
+  try{
+    await set(ref(db,'config/secretQuestion'),q);
+    await set(ref(db,'config/secretAnswer'),a);
+    secretQuestion=q;secretAnswer=a;
+    closeModal();showToast('Question secrète modifiée ✓');
+  }catch(e){err.textContent='Erreur Firebase';}
+};
+
+window.verifierReponse=async function(){
+  const rep=document.getElementById('m_rep').value.trim().toUpperCase();
+  try{const snap=await get(ref(db,'config/secretAnswer'));if(snap.exists())secretAnswer=snap.val();}catch(e){}
+  if(rep===secretAnswer.toUpperCase()){
+    closeModal();showModal('nouveauPwd');
+  }else{
+    document.getElementById('m_repErr').textContent='Réponse incorrecte.';
+  }
+};
+
+window.definirNouveauPwd=async function(){
+  const p1=document.getElementById('m_npwd1').value;
+  const p2=document.getElementById('m_npwd2').value;
+  const err=document.getElementById('m_npwdErr');
   if(!p1){err.textContent='Champ vide';return;}
   if(p1.length<4){err.textContent='Minimum 4 caractères';return;}
   if(p1!==p2){err.textContent='Ne correspondent pas';return;}
   try{
     await set(ref(db,'config/mainPassword'),p1);
-    mainPassword=p1;
-    closeModal();
-    showToast('Mot de passe modifié et sauvegardé ✓');
-  }catch(e){err.textContent='Erreur: '+e.message;}
-};
-
-/* Changer code admin → sauvegardé Firebase */
-window.changerAdminPwd=async function(){
-  const p1=document.getElementById('m_apwd1').value;
-  const p2=document.getElementById('m_apwd2').value;
-  const err=document.getElementById('m_apwdErr');
-  if(!p1){err.textContent='Champ vide';return;}
-  if(p1.length<4){err.textContent='Minimum 4 caractères';return;}
-  if(p1!==p2){err.textContent='Ne correspondent pas';return;}
-  try{
-    await set(ref(db,'config/adminPassword'),p1);
-    adminPassword=p1;
-    closeModal();
-    showToast('Code admin modifié et sauvegardé ✓');
-  }catch(e){err.textContent='Erreur: '+e.message;}
+    mainPassword=p1;closeModal();
+    showToast('Mot de passe réinitialisé ✓');
+  }catch(e){err.textContent='Erreur Firebase';}
 };
 
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
