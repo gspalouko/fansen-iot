@@ -1,0 +1,36 @@
+{
+  "name": "FANSEN IoT — Système de Pointage",
+  "short_name": "FANSEN IoT",
+  "description": "Plateforme automatisée de gestion de présence basée sur ESP32 & IoT",
+  "start_url": "/fansen-iot/",
+  "scope": "/fansen-iot/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#00080f",
+  "theme_color": "#00e5ff",
+  "lang": "fr",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/gspalouko/fansen-iot/main/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/gspalouko/fansen-iot/main/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Pointages du jour",
+      "short_name": "Pointages",
+      "url": "/fansen-iot/",
+      "description": "Voir les pointages du jour"
+    }
+  ]
+}
